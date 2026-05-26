@@ -8,17 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var viewModel = GameListViewModel()
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List {
+                ForEach(viewModel.games) { game in
+                    VStack(alignment: .leading) {
+                        Text(game.title)
+                            .font(.headline)
+                        Text(game.platform)
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                        Text(game.status.rawValue)
+                            .font(.caption)
+                            .foregroundStyle(.blue)
+                    }
+                }
+                .onDelete(perform: viewModel.deleteGame)
+            }
+            .navigationTitle("Game Backlog")
         }
-        .padding()
     }
 }
-
 #Preview {
     ContentView()
 }
