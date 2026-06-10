@@ -1,0 +1,30 @@
+{
+  "configurations" : [
+    {
+      "id" : "910268B8-9F00-48DF-BA6A-DC463D36A44E",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "performanceAntipatternCheckerEnabled" : true,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:GameBacklog.xcodeproj",
+      "identifier" : "52876F812FA6448800BCCA8B",
+      "name" : "GameBacklog"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:GameBacklog.xcodeproj",
+        "identifier" : "52471D452FD9ADA900503210",
+        "name" : "GameBacklogUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -11,7 +11,9 @@
 		52ECC59F2FD9C38800C76002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC5992FD9C38800C76002 /* ContentView.swift */; };
 		52ECC5A02FD9C38800C76002 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC59A2FD9C38800C76002 /* Game.swift */; };
 		52ECC5A22FD9C38800C76002 /* GameListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC59C2FD9C38800C76002 /* GameListViewModel.swift */; };
-		52ECC5AD2FD9C6AC00C76002 /* ProfileScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC5AC2FD9C6AC00C76002 /* ProfileScreenView.swift */; };
+		52ECC5B32FD9D5D100C76002 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC5B22FD9D5D100C76002 /* Profile.swift */; };
+		52ECC5B92FD9E5F400C76002 /* ProfileScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC5B82FD9E5F400C76002 /* ProfileScreenView.swift */; };
+		52ECC5BB2FD9E60400C76002 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC5BA2FD9E60400C76002 /* ProfileViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -31,7 +33,10 @@
 		52ECC5992FD9C38800C76002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		52ECC59A2FD9C38800C76002 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		52ECC59C2FD9C38800C76002 /* GameListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListViewModel.swift; sourceTree = "<group>"; };
-		52ECC5AC2FD9C6AC00C76002 /* ProfileScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenView.swift; sourceTree = "<group>"; };
+		52ECC5B22FD9D5D100C76002 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		52ECC5B82FD9E5F400C76002 /* ProfileScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenView.swift; sourceTree = "<group>"; };
+		52ECC5BA2FD9E60400C76002 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		52ECC5BC2FD9EC8300C76002 /* GameBacklog.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GameBacklog.xctestplan; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -68,6 +73,7 @@
 		52876F792FA6448800BCCA8B = {
 			isa = PBXGroup;
 			children = (
+				52ECC5BC2FD9EC8300C76002 /* GameBacklog.xctestplan */,
 				52876F842FA6448800BCCA8B /* GameBacklog */,
 				52ECC5AE2FD9CFAE00C76002 /* Models */,
 				52ECC5B02FD9CFDA00C76002 /* Views */,
@@ -90,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				52ECC59A2FD9C38800C76002 /* Game.swift */,
+				52ECC5B22FD9D5D100C76002 /* Profile.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -98,7 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				52ECC59C2FD9C38800C76002 /* GameListViewModel.swift */,
-				52ECC5AC2FD9C6AC00C76002 /* ProfileScreenView.swift */,
+				52ECC5BA2FD9E60400C76002 /* ProfileViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -108,6 +115,7 @@
 			children = (
 				52ECC5972FD9C38800C76002 /* AddGameView.swift */,
 				52ECC5992FD9C38800C76002 /* ContentView.swift */,
+				52ECC5B82FD9E5F400C76002 /* ProfileScreenView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -231,7 +239,9 @@
 				52ECC59E2FD9C38800C76002 /* AddGameView.swift in Sources */,
 				52ECC59F2FD9C38800C76002 /* ContentView.swift in Sources */,
 				52ECC5A02FD9C38800C76002 /* Game.swift in Sources */,
-				52ECC5AD2FD9C6AC00C76002 /* ProfileScreenView.swift in Sources */,
+				52ECC5BB2FD9E60400C76002 /* ProfileViewModel.swift in Sources */,
+				52ECC5B32FD9D5D100C76002 /* Profile.swift in Sources */,
+				52ECC5B92FD9E5F400C76002 /* ProfileScreenView.swift in Sources */,
 				52ECC5A22FD9C38800C76002 /* GameListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
