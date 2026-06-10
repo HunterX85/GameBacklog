@@ -36,7 +36,13 @@ final class GameBacklogUITests: XCTestCase {
         app.navigationBars["Game Backlog"].buttons["Add"].tap()
         XCTAssertTrue(app.navigationBars["Нова гра"].exists)
     }
-
+    
+    @MainActor
+    func testProfileScreenOpens() {
+        app.navigationBars["Game Backlog"].buttons["profileButton"].tap()
+        XCTAssertTrue(app.staticTexts["Profile"].waitForExistence(timeout: 2))
+    }
+    
     @MainActor
     func testAddGameAppearsInList() {
         openAddGameSheet()

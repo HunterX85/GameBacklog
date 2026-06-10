@@ -30,7 +30,15 @@ struct ContentView: View {
             }
             .navigationTitle("Game Backlog")
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .topBarTrailing) {
+                    NavigationLink(destination: ProfileScreenView()) {
+                        Image(systemName: "person")
+                    }
+                    .accessibilityIdentifier("profileButton")
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .bottomBar) {
                     Button {
                         showingAddGame = true
                     } label: {
