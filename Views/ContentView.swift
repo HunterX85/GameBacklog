@@ -29,7 +29,7 @@ struct ContentView: View {
                     }
                     .onDelete(perform: viewModel.deleteGame)
                 }
-                .navigationTitle("Game Backlog")
+                .navigationTitle(String(localized: "app.title"))
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button {
@@ -44,22 +44,22 @@ struct ContentView: View {
                 }
             }
             .tabItem {
-                Label("Games", systemImage: "gamecontroller")
+                Label(String(localized: "tab.games"), systemImage: "gamecontroller")
             }
 
             NavigationStack {
                 ProfileScreenView()
             }
             .tabItem {
-                Label("Profile", systemImage: "person")
+                Label(String(localized: "tab.profile"), systemImage: "person")
             }
 
             NavigationStack {
-                Text("Settings")
-                    .navigationTitle("Settings")
+                Text(String(localized: "tab.settings"))
+                    .navigationTitle(String(localized: "tab.settings"))
             }
             .tabItem {
-                Label("Settings", systemImage: "gearshape")
+                Label(String(localized: "tab.settings"), systemImage: "gearshape")
             }
         }
     }

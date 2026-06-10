@@ -13,15 +13,19 @@ struct ProfileScreenView: View {
 
     var body: some View {
         Form {
-            Section("Personal Info") {
-                TextField("First Name", text: $viewModel.firstName).accessibilityIdentifier("firstName")
-                TextField("Last Name", text: $viewModel.lastName).accessibilityIdentifier("lastName")
-                TextField("Nickname", text: $viewModel.nickname).accessibilityIdentifier("nickname")
+            Section(String(localized: "profile.section.personalInfo")) {
+                TextField(String(localized: "profile.field.firstName"), text: $viewModel.firstName)
+                    .accessibilityIdentifier("firstName")
+                TextField(String(localized: "profile.field.lastName"), text: $viewModel.lastName)
+                    .accessibilityIdentifier("lastName")
+                TextField(String(localized: "profile.field.nickname"), text: $viewModel.nickname)
+                    .accessibilityIdentifier("nickname")
             }
 
-            Section("Contacts") {
-                TextField("Email", text: $viewModel.email)
-                    .keyboardType(.emailAddress).accessibilityIdentifier("email")
+            Section(String(localized: "profile.section.contacts")) {
+                TextField(String(localized: "profile.field.email"), text: $viewModel.email)
+                    .keyboardType(.emailAddress)
+                    .accessibilityIdentifier("email")
             }
         }
         .onTapGesture {
@@ -29,7 +33,7 @@ struct ProfileScreenView: View {
         }
         .overlay(alignment: .bottom) {
             if showSnackbar {
-                Text("Profile saved")
+                Text(String(localized: "profile.snackbar.saved"))
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
                     .background(Color(.label))
@@ -40,10 +44,10 @@ struct ProfileScreenView: View {
             }
         }
         .animation(.easeInOut(duration: 0.3), value: showSnackbar)
-        .navigationTitle("Profile")
+        .navigationTitle(String(localized: "profile.title"))
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                Button("Save") {
+                Button(String(localized: "profile.button.save")) {
                     viewModel.save()
                     hideKeyboard()
                     showSnackbar = true
@@ -54,7 +58,7 @@ struct ProfileScreenView: View {
             }
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
-                Button("Done") {
+                Button(String(localized: "profile.button.done")) {
                     hideKeyboard()
                 }
             }

@@ -18,26 +18,26 @@ struct AddGameView: View {
     var body: some View {
         NavigationStack {
             Form {
-                TextField("Назва гри", text: $title)
-                TextField("Платформа (PC, PS5...)", text: $platform)
+                TextField(String(localized: "addGame.field.gameTitle"), text: $title)
+                TextField(String(localized: "addGame.field.platform"), text: $platform)
 
-                Picker("Статус", selection: $status) {
+                Picker(String(localized: "addGame.field.status"), selection: $status) {
                     ForEach(GameStatus.allCases, id: \.self) { status in
                         Text(status.rawValue)
                     }
                 }
                 .pickerStyle(.menu)
             }
-            .navigationTitle("Нова гра")
+            .navigationTitle(String(localized: "addGame.title"))
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Додати") {
+                    Button(String(localized: "addGame.button.add")) {
                         viewModel.addGame(title: title, platform: platform, status: status)
                         dismiss()
                     }
                 }
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Закрити") {
+                    Button(String(localized: "addGame.button.close")) {
                         dismiss()
                     }
                 }

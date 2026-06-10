@@ -8,9 +8,9 @@
 import Foundation
 
 enum GameStatus: String, CaseIterable {
-    case wantToPlay = "Хочу пройти"
-    case inProgress = "В прогресі"
-    case completed  = "Пройдено"
+    case wantToPlay = "Want to Play"
+    case inProgress = "In Progress"
+    case completed  = "Completed"
 }
 
 struct Game: Identifiable {
