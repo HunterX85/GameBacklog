@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject var viewModel = GameListViewModel()
+    @State private var showingAddGame = false
 
     var body: some View {
         NavigationStack {
@@ -28,6 +29,18 @@ struct ContentView: View {
                 .onDelete(perform: viewModel.deleteGame)
             }
             .navigationTitle("Game Backlog")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showingAddGame = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingAddGame) {
+                AddGameView(viewModel: viewModel)
+            }
         }
     }
 }
