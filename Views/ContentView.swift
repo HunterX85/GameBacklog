@@ -12,46 +12,59 @@ struct ContentView: View {
     @State private var showingAddGame = false
 
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(viewModel.games) { game in
-                    VStack(alignment: .leading) {
-                        Text(game.title)
-                            .font(.headline)
-                        Text(game.platform)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                        Text(game.status.rawValue)
-                            .font(.caption)
-                            .foregroundStyle(.blue)
+        TabView {
+            NavigationStack {
+                List {
+                    ForEach(viewModel.games) { game in
+                        VStack(alignment: .leading) {
+                            Text(game.title)
+                                .font(.headline)
+                            Text(game.platform)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                            Text(game.status.rawValue)
+                                .font(.caption)
+                                .foregroundStyle(.blue)
+                        }
+                    }
+                    .onDelete(perform: viewModel.deleteGame)
+                }
+                .navigationTitle("Game Backlog")
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button {
+                            showingAddGame = true
+                        } label: {
+                            Image(systemName: "plus")
+                        }
                     }
                 }
-                .onDelete(perform: viewModel.deleteGame)
-            }
-            .navigationTitle("Game Backlog")
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink(destination: ProfileScreenView()) {
-                        Image(systemName: "person")
-                    }
-                    .accessibilityIdentifier("profileButton")
+                .sheet(isPresented: $showingAddGame) {
+                    AddGameView(viewModel: viewModel)
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .bottomBar) {
-                    Button {
-                        showingAddGame = true
-                    } label: {
-                        Image(systemName: "plus")
-                    }
-                }
+            .tabItem {
+                Label("Games", systemImage: "gamecontroller")
             }
-            .sheet(isPresented: $showingAddGame) {
-                AddGameView(viewModel: viewModel)
+
+            NavigationStack {
+                ProfileScreenView()
+            }
+            .tabItem {
+                Label("Profile", systemImage: "person")
+            }
+
+            NavigationStack {
+                Text("Settings")
+                    .navigationTitle("Settings")
+            }
+            .tabItem {
+                Label("Settings", systemImage: "gearshape")
             }
         }
     }
 }
+
 #Preview {
     ContentView()
 }
