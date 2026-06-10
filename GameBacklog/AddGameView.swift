@@ -26,6 +26,7 @@ struct AddGameView: View {
                         Text(status.rawValue)
                     }
                 }
+                .pickerStyle(.menu)
             }
             .navigationTitle("Нова гра")
             .toolbar {
@@ -36,7 +37,7 @@ struct AddGameView: View {
                     }
                 }
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Відміна") {
+                    Button("Закрити") {
                         dismiss()
                     }
                 }

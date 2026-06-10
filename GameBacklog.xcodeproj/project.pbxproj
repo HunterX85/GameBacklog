@@ -6,11 +6,27 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		52471D4C2FD9ADA900503210 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 52876F7A2FA6448800BCCA8B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52876F812FA6448800BCCA8B;
+			remoteInfo = GameBacklog;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		52471D462FD9ADA900503210 /* GameBacklogUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GameBacklogUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		52876F822FA6448800BCCA8B /* GameBacklog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameBacklog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		52471D472FD9ADA900503210 /* GameBacklogUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = GameBacklogUITests;
+			sourceTree = "<group>";
+		};
 		52876F842FA6448800BCCA8B /* GameBacklog */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = GameBacklog;
@@ -19,6 +35,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		52471D432FD9ADA900503210 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		52876F7F2FA6448800BCCA8B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				52876F842FA6448800BCCA8B /* GameBacklog */,
+				52471D472FD9ADA900503210 /* GameBacklogUITests */,
 				52876F832FA6448800BCCA8B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				52876F822FA6448800BCCA8B /* GameBacklog.app */,
+				52471D462FD9ADA900503210 /* GameBacklogUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +73,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		52471D452FD9ADA900503210 /* GameBacklogUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 52471D4E2FD9ADA900503210 /* Build configuration list for PBXNativeTarget "GameBacklogUITests" */;
+			buildPhases = (
+				52471D422FD9ADA900503210 /* Sources */,
+				52471D432FD9ADA900503210 /* Frameworks */,
+				52471D442FD9ADA900503210 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				52471D4D2FD9ADA900503210 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				52471D472FD9ADA900503210 /* GameBacklogUITests */,
+			);
+			name = GameBacklogUITests;
+			packageProductDependencies = (
+			);
+			productName = GameBacklogUITests;
+			productReference = 52471D462FD9ADA900503210 /* GameBacklogUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		52876F812FA6448800BCCA8B /* GameBacklog */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 52876F8D2FA6448A00BCCA8B /* Build configuration list for PBXNativeTarget "GameBacklog" */;
@@ -80,6 +128,10 @@
 				LastSwiftUpdateCheck = 2640;
 				LastUpgradeCheck = 2640;
 				TargetAttributes = {
+					52471D452FD9ADA900503210 = {
+						CreatedOnToolsVersion = 26.4.1;
+						TestTargetID = 52876F812FA6448800BCCA8B;
+					};
 					52876F812FA6448800BCCA8B = {
 						CreatedOnToolsVersion = 26.4.1;
 					};
@@ -100,11 +152,19 @@
 			projectRoot = "";
 			targets = (
 				52876F812FA6448800BCCA8B /* GameBacklog */,
+				52471D452FD9ADA900503210 /* GameBacklogUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		52471D442FD9ADA900503210 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		52876F802FA6448800BCCA8B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +175,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		52471D422FD9ADA900503210 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		52876F7E2FA6448800BCCA8B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +191,55 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		52471D4D2FD9ADA900503210 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52876F812FA6448800BCCA8B /* GameBacklog */;
+			targetProxy = 52471D4C2FD9ADA900503210 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		52471D4F2FD9ADA900503210 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7VCQL8XRF9;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = hunter.GameBacklogUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GameBacklog;
+			};
+			name = Debug;
+		};
+		52471D502FD9ADA900503210 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7VCQL8XRF9;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = hunter.GameBacklogUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = GameBacklog;
+			};
+			name = Release;
+		};
 		52876F8B2FA6448A00BCCA8B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -313,6 +428,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		52471D4E2FD9ADA900503210 /* Build configuration list for PBXNativeTarget "GameBacklogUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52471D4F2FD9ADA900503210 /* Debug */,
+				52471D502FD9ADA900503210 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		52876F7D2FA6448800BCCA8B /* Build configuration list for PBXProject "GameBacklog" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
