@@ -115,12 +115,6 @@ struct ProfileScreenView: View {
                 }
                 .disabled(!viewModel.hasChanges)
             }
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button(String(localized: "profile.button.done")) {
-                    hideKeyboard()
-                }
-            }
         }
     }
 

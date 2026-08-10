@@ -1,52 +1,32 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "app.title" : {
+    "activity.justAdded" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Game Backlog"
+            "value" : "Just added"
           }
         }
       }
     },
-    "tab.games" : {
+    "addGame.button.add" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Games"
+            "value" : "Add"
           }
         }
       }
     },
-    "tab.profile" : {
+    "addGame.button.close" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Profile"
-          }
-        }
-      }
-    },
-    "tab.settings" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Settings"
-          }
-        }
-      }
-    },
-    "addGame.title" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "New Game"
+            "value" : "Close"
           }
         }
       }
@@ -81,102 +61,82 @@
         }
       }
     },
-    "addGame.button.add" : {
+    "addGame.title" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Add"
+            "value" : "New Game"
           }
         }
       }
     },
-    "addGame.button.close" : {
+    "app.title" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Close"
+            "value" : "Game Backlog"
           }
         }
       }
     },
-    "profile.title" : {
+    "filter.all" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Profile"
+            "value" : "All"
           }
         }
       }
     },
-    "profile.section.personalInfo" : {
+    "filter.backlog" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Personal Info"
+            "value" : "Backlog"
           }
         }
       }
     },
-    "profile.section.contacts" : {
+    "filter.completed" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Contacts"
+            "value" : "Completed"
           }
         }
       }
     },
-    "profile.field.firstName" : {
+    "filter.playing" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "First Name"
+            "value" : "Playing"
           }
         }
       }
     },
-    "profile.field.lastName" : {
+    "games.subtitle" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Last Name"
+            "value" : "%lld games • %lld completed"
           }
         }
       }
     },
-    "profile.field.nickname" : {
+    "Options" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nickname"
-          }
-        }
-      }
-    },
-    "profile.field.email" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Email"
-          }
-        }
-      }
-    },
-    "profile.button.save" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save"
+            "value" : "Options"
           }
         }
       }
@@ -211,6 +171,56 @@
         }
       }
     },
+    "profile.button.save" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        }
+      }
+    },
+    "profile.field.email" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        }
+      }
+    },
+    "profile.field.firstName" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First Name"
+          }
+        }
+      }
+    },
+    "profile.field.lastName" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last Name"
+          }
+        }
+      }
+    },
+    "profile.field.nickname" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nickname"
+          }
+        }
+      }
+    },
     "profile.photo.accessibilityLabel" : {
       "localizations" : {
         "en" : {
@@ -241,12 +251,112 @@
         }
       }
     },
+    "profile.section.contacts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacts"
+          }
+        }
+      }
+    },
+    "profile.section.personalInfo" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Personal Info"
+          }
+        }
+      }
+    },
     "profile.snackbar.saved" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Profile saved"
+          }
+        }
+      }
+    },
+    "profile.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
+          }
+        }
+      }
+    },
+    "status.backlog" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backlog"
+          }
+        }
+      }
+    },
+    "status.completed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Completed"
+          }
+        }
+      }
+    },
+    "status.dropped" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dropped"
+          }
+        }
+      }
+    },
+    "status.playing" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Playing"
+          }
+        }
+      }
+    },
+    "tab.games" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Games"
+          }
+        }
+      }
+    },
+    "tab.profile" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
+          }
+        }
+      }
+    },
+    "tab.settings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
           }
         }
       }
