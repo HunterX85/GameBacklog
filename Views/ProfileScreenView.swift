@@ -6,30 +6,80 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ProfileScreenView: View {
     @StateObject private var viewModel = ProfileViewModel()
+    @State private var selectedPhoto: PhotosPickerItem?
     @State private var showSnackbar = false
 
     var body: some View {
         Form {
+            Section {
+                VStack(spacing: 12) {
+                    profilePhoto
+
+                    PhotosPicker(selection: $selectedPhoto, matching: .images) {
+                        Label(String(localized: "profile.button.changePhoto"), systemImage: "photo")
+                            .font(.subheadline.weight(.semibold))
+                    }
+                    .accessibilityIdentifier("changeProfilePhoto")
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+            }
+            .listRowBackground(Color.clear)
+
             Section(String(localized: "profile.section.personalInfo")) {
-                TextField(String(localized: "profile.field.firstName"), text: $viewModel.firstName)
-                    .accessibilityIdentifier("firstName")
-                TextField(String(localized: "profile.field.lastName"), text: $viewModel.lastName)
-                    .accessibilityIdentifier("lastName")
-                TextField(String(localized: "profile.field.nickname"), text: $viewModel.nickname)
-                    .accessibilityIdentifier("nickname")
+                LabeledContent(String(localized: "profile.field.firstName")) {
+                    TextField(String(localized: "profile.field.firstName"), text: $viewModel.firstName)
+                        .multilineTextAlignment(.trailing)
+                        .textContentType(.givenName)
+                        .submitLabel(.next)
+                        .accessibilityIdentifier("firstName")
+                }
+
+                LabeledContent(String(localized: "profile.field.lastName")) {
+                    TextField(String(localized: "profile.field.lastName"), text: $viewModel.lastName)
+                        .multilineTextAlignment(.trailing)
+                        .textContentType(.familyName)
+                        .submitLabel(.next)
+                        .accessibilityIdentifier("lastName")
+                }
+
+                LabeledContent(String(localized: "profile.field.nickname")) {
+                    TextField(String(localized: "profile.field.nickname"), text: $viewModel.nickname)
+                        .multilineTextAlignment(.trailing)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .submitLabel(.next)
+                        .accessibilityIdentifier("nickname")
+                }
             }
 
             Section(String(localized: "profile.section.contacts")) {
-                TextField(String(localized: "profile.field.email"), text: $viewModel.email)
-                    .keyboardType(.emailAddress)
-                    .accessibilityIdentifier("email")
+                LabeledContent(String(localized: "profile.field.email")) {
+                    TextField(String(localized: "profile.field.email"), text: $viewModel.email)
+                        .multilineTextAlignment(.trailing)
+                        .textContentType(.emailAddress)
+                        .textInputAutocapitalization(.never)
+                        .keyboardType(.emailAddress)
+                        .autocorrectionDisabled()
+                        .submitLabel(.done)
+                        .accessibilityIdentifier("email")
+                }
             }
         }
+        .formStyle(.grouped)
         .onTapGesture {
             hideKeyboard()
+        }
+        .onChange(of: selectedPhoto) { _, newPhoto in
+            Task {
+                if let data = try? await newPhoto?.loadTransferable(type: Data.self) {
+                    viewModel.profilePhotoData = data
+                }
+            }
         }
         .overlay(alignment: .bottom) {
             if showSnackbar {
@@ -55,8 +105,60 @@ struct ProfileScreenView: View {
                         showSnackbar = false
                     }
                 }
+                .disabled(!viewModel.hasChanges)
+            }
+            ToolbarItem(placement: .cancellationAction) {
+                Button(String(localized: "profile.button.cancel")) {
+                    viewModel.cancelChanges()
+                    selectedPhoto = nil
+                    hideKeyboard()
+                }
+                .disabled(!viewModel.hasChanges)
+            }
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button(String(localized: "profile.button.done")) {
+                    hideKeyboard()
+                }
             }
         }
+    }
+
+    @ViewBuilder
+    private var profilePhoto: some View {
+        if let profilePhotoData = viewModel.profilePhotoData,
+           let image = UIImage(data: profilePhotoData) {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: 104, height: 104)
+                .clipShape(Circle())
+                .overlay {
+                    Circle()
+                        .strokeBorder(Color(.separator), lineWidth: 0.5)
+                }
+                .accessibilityLabel(String(localized: "profile.photo.accessibilityLabel"))
+        } else {
+            ZStack {
+                Circle()
+                    .fill(Color(.tertiarySystemFill))
+
+                Text(profileInitials)
+                    .font(.largeTitle.weight(.semibold))
+                    .foregroundStyle(.secondary)
+            }
+            .frame(width: 104, height: 104)
+            .accessibilityLabel(String(localized: "profile.photo.placeholderAccessibilityLabel"))
+        }
+    }
+
+    private var profileInitials: String {
+        let initials = [viewModel.firstName, viewModel.lastName]
+            .compactMap { $0.trimmingCharacters(in: .whitespacesAndNewlines).first }
+            .map(String.init)
+            .joined()
+
+        return initials.isEmpty ? String(localized: "profile.photo.placeholderInitials") : initials.uppercased()
     }
 
     private func hideKeyboard() {
