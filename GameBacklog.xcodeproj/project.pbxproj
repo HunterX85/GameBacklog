@@ -16,6 +16,10 @@
 		52ECC5BB2FD9E60400C76002 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC5BA2FD9E60400C76002 /* ProfileViewModel.swift */; };
 		52ECC5C12FDAE00000C76002 /* GameCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC5C02FDAE00000C76002 /* GameCardView.swift */; };
 		52ECC5C32FDAE00000C76002 /* GamesScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC5C22FDAE00000C76002 /* GamesScreenView.swift */; };
+		260CB0F071E4284FD4F54B1B /* IGDBGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6F26CCBBBE30338E7697D6 /* IGDBGame.swift */; };
+		22DCBF3BB321C9A15CB51A6E /* IGDBAuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4003CC27CB6A6414E33C627 /* IGDBAuthService.swift */; };
+		41999CC37969ED1B1DDDB134 /* IGDBService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8F5ADCF15F70E0F6B066A /* IGDBService.swift */; };
+		AC3B4F7633FDF2DF7C516CE8 /* GameSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666A2EB0B72CDEBFA4A80698 /* GameSearchViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +48,10 @@
 		00E7EE53D6FF65F84A24E464 /* Secrets.xcconfig.template */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig.template; sourceTree = "<group>"; };
 		D9007A9F8C668EBCD4BBB789 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		23C5423ECD4942B792543427 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6E6F26CCBBBE30338E7697D6 /* IGDBGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGDBGame.swift; sourceTree = "<group>"; };
+		E4003CC27CB6A6414E33C627 /* IGDBAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGDBAuthService.swift; sourceTree = "<group>"; };
+		36E8F5ADCF15F70E0F6B066A /* IGDBService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGDBService.swift; sourceTree = "<group>"; };
+		666A2EB0B72CDEBFA4A80698 /* GameSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSearchViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -85,6 +93,7 @@
 				52ECC5AE2FD9CFAE00C76002 /* Models */,
 				52ECC5B02FD9CFDA00C76002 /* Views */,
 				52ECC5AF2FD9CFD300C76002 /* ViewModels */,
+				23437CC99FC92B554CF87453 /* Services */,
 				812D68BD9EEA1B605F15FC30 /* Config */,
 				52471D472FD9ADA900503210 /* GameBacklogUITests */,
 				52876F832FA6448800BCCA8B /* Products */,
@@ -115,8 +124,18 @@
 			children = (
 				52ECC59A2FD9C38800C76002 /* Game.swift */,
 				52ECC5B22FD9D5D100C76002 /* Profile.swift */,
+				6E6F26CCBBBE30338E7697D6 /* IGDBGame.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		23437CC99FC92B554CF87453 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E4003CC27CB6A6414E33C627 /* IGDBAuthService.swift */,
+				36E8F5ADCF15F70E0F6B066A /* IGDBService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 		52ECC5AF2FD9CFD300C76002 /* ViewModels */ = {
@@ -124,6 +143,7 @@
 			children = (
 				52ECC59C2FD9C38800C76002 /* GameListViewModel.swift */,
 				52ECC5BA2FD9E60400C76002 /* ProfileViewModel.swift */,
+				666A2EB0B72CDEBFA4A80698 /* GameSearchViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -265,6 +285,10 @@
 				52ECC5A22FD9C38800C76002 /* GameListViewModel.swift in Sources */,
 				52ECC5C12FDAE00000C76002 /* GameCardView.swift in Sources */,
 				52ECC5C32FDAE00000C76002 /* GamesScreenView.swift in Sources */,
+				260CB0F071E4284FD4F54B1B /* IGDBGame.swift in Sources */,
+				22DCBF3BB321C9A15CB51A6E /* IGDBAuthService.swift in Sources */,
+				41999CC37969ED1B1DDDB134 /* IGDBService.swift in Sources */,
+				AC3B4F7633FDF2DF7C516CE8 /* GameSearchViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

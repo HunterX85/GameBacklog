@@ -31,16 +31,6 @@
         }
       }
     },
-    "addGame.field.gameTitle" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Game Title"
-          }
-        }
-      }
-    },
     "addGame.field.platform" : {
       "localizations" : {
         "en" : {
@@ -57,6 +47,56 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Status"
+          }
+        }
+      }
+    },
+    "addGame.search.change" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change"
+          }
+        }
+      }
+    },
+    "addGame.search.error" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't load results. Check your connection."
+          }
+        }
+      }
+    },
+    "addGame.search.noResults" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No games found"
+          }
+        }
+      }
+    },
+    "addGame.search.placeholder" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search for a game"
+          }
+        }
+      }
+    },
+    "addGame.search.searching" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Searching…"
           }
         }
       }
