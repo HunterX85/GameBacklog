@@ -56,12 +56,6 @@ struct ProfileScreenView: View {
                     }
                 }
             }
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer()
-                Button(String(localized: "profile.button.done")) {
-                    hideKeyboard()
-                }
-            }
         }
     }
 

@@ -13,7 +13,7 @@ struct AddGameView: View {
 
     @State private var title = ""
     @State private var platform = ""
-    @State private var status: GameStatus = .wantToPlay
+    @State private var status: GameStatus = .backlog
 
     var body: some View {
         NavigationStack {
@@ -22,8 +22,8 @@ struct AddGameView: View {
                 TextField(String(localized: "addGame.field.platform"), text: $platform)
 
                 Picker(String(localized: "addGame.field.status"), selection: $status) {
-                    ForEach(GameStatus.allCases, id: \.self) { status in
-                        Text(status.rawValue)
+                    ForEach(GameStatus.allCases) { status in
+                        Text(status.title).tag(status)
                     }
                 }
                 .pickerStyle(.menu)
