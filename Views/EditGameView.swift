@@ -84,7 +84,14 @@ struct EditGameView: View {
     private func save() {
         game.platform = selectedPlatform
         game.status = status
-        try? modelContext.save()
+        do {
+            try modelContext.save()
+        } catch {
+            // `game` is a live reference, so this mutation is already visible
+            // in the UI even if the persist below fails — surfacing that
+            // mismatch loudly in debug beats a silent, confusing data loss.
+            assertionFailure("Failed to save game update: \(error)")
+        }
         dismiss()
     }
 }

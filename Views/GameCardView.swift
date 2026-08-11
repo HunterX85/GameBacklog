@@ -102,7 +102,11 @@ struct GameCardView: View {
 
     private func deleteGame() {
         modelContext.delete(game)
-        try? modelContext.save()
+        do {
+            try modelContext.save()
+        } catch {
+            assertionFailure("Failed to save game deletion: \(error)")
+        }
     }
 }
 
