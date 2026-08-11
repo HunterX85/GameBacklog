@@ -208,7 +208,8 @@ struct AddGameView: View {
             status: status,
             progress: 0,
             activity: String(localized: "activity.justAdded"),
-            coverURL: selectedGame.cover?.url
+            coverURL: selectedGame.cover?.url,
+            availablePlatforms: selectedGame.platforms?.map(\.name) ?? []
         )
         modelContext.insert(game)
         // Autosave is timing-dependent (ties to scene-phase transitions) —
@@ -256,7 +257,8 @@ private struct SearchResultRow: View {
 
 // MARK: - Cover thumbnail
 
-private struct CoverThumbnail: View {
+/// Shared by the search results row and `EditGameView`'s header.
+struct CoverThumbnail: View {
     let url: URL?
 
     var body: some View {

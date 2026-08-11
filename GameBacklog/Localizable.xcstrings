@@ -121,6 +121,26 @@
         }
       }
     },
+    "editGame.button.save" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save"
+          }
+        }
+      }
+    },
+    "editGame.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update Game"
+          }
+        }
+      }
+    },
     "filter.all" : {
       "localizations" : {
         "en" : {
@@ -157,6 +177,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Playing"
+          }
+        }
+      }
+    },
+    "gameCard.action.delete" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        }
+      }
+    },
+    "gameCard.action.update" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update"
           }
         }
       }

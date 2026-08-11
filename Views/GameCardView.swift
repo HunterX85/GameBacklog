@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// A single backlog entry rendered as an elevated card, matching the
 /// Games screen mockup. Composed of small, independently-previewable pieces.
 struct GameCardView: View {
     let game: Game
-    var onOptions: () -> Void = {}
+
+    @Environment(\.modelContext) private var modelContext
+    @State private var showingEdit = false
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
@@ -34,6 +37,9 @@ struct GameCardView: View {
                 .fill(Color(.secondarySystemGroupedBackground))
         )
         .shadow(color: .black.opacity(0.06), radius: 12, x: 0, y: 4)
+        .sheet(isPresented: $showingEdit) {
+            EditGameView(game: game)
+        }
     }
 
     // MARK: Subviews
@@ -47,14 +53,24 @@ struct GameCardView: View {
 
             Spacer(minLength: 8)
 
-            Button(action: onOptions) {
+            Menu {
+                Button {
+                    showingEdit = true
+                } label: {
+                    Label(String(localized: "gameCard.action.update"), systemImage: "pencil")
+                }
+                Button(role: .destructive) {
+                    deleteGame()
+                } label: {
+                    Label(String(localized: "gameCard.action.delete"), systemImage: "trash")
+                }
+            } label: {
                 Image(systemName: "ellipsis")
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundStyle(.secondary)
                     .frame(width: 28, height: 24, alignment: .top)
                     .contentShape(Rectangle())
             }
-            .buttonStyle(.plain)
             .accessibilityLabel(Text("Options"))
         }
     }
@@ -80,6 +96,13 @@ struct GameCardView: View {
                 .foregroundStyle(.secondary)
         }
         .padding(.top, 2)
+    }
+
+    // MARK: Actions
+
+    private func deleteGame() {
+        modelContext.delete(game)
+        try? modelContext.save()
     }
 }
 
@@ -164,11 +187,18 @@ struct GameProgressBar: View {
 }
 
 #Preview {
-    VStack(spacing: 16) {
-        ForEach(Game.samples) { game in
-            GameCardView(game: game)
+    let container = try! ModelContainer(for: Game.self, configurations: .init(isStoredInMemoryOnly: true))
+    let samples = Game.samples
+    samples.forEach { container.mainContext.insert($0) }
+
+    return ScrollView {
+        VStack(spacing: 16) {
+            ForEach(samples) { game in
+                GameCardView(game: game)
+            }
         }
+        .padding()
     }
-    .padding()
     .background(Color(.systemGroupedBackground))
+    .modelContainer(container)
 }
