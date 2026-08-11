@@ -61,6 +61,9 @@ final class Game {
     var coverURL: URL?
     /// Drives sort order in `@Query` — insertion order isn't otherwise guaranteed.
     var dateAdded: Date
+    /// Every platform IGDB listed for this title at add time, so the edit
+    /// screen can offer the same picker without a second network round trip.
+    var availablePlatforms: [String]
 
     init(
         title: String,
@@ -69,7 +72,8 @@ final class Game {
         progress: Double = 0,
         activity: String = "",
         coverURL: URL? = nil,
-        dateAdded: Date = .now
+        dateAdded: Date = .now,
+        availablePlatforms: [String] = []
     ) {
         self.title = title
         self.platform = platform
@@ -78,6 +82,7 @@ final class Game {
         self.activity = activity
         self.coverURL = coverURL
         self.dateAdded = dateAdded
+        self.availablePlatforms = availablePlatforms
     }
 }
 
