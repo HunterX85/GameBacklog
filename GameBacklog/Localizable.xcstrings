@@ -281,12 +281,32 @@
         }
       }
     },
+    "profile.button.ok" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
     "profile.button.save" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Save"
+          }
+        }
+      }
+    },
+    "profile.crop.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move and Scale"
           }
         }
       }
@@ -337,6 +357,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Profile photo"
+          }
+        }
+      }
+    },
+    "profile.photo.loadError.message" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There was a problem loading the selected photo. Please try again."
+          }
+        }
+      }
+    },
+    "profile.photo.loadError.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't Load Photo"
           }
         }
       }

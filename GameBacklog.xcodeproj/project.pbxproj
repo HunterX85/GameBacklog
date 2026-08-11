@@ -20,6 +20,8 @@
 		52ECC5C32FDAE00000C76002 /* GamesScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC5C22FDAE00000C76002 /* GamesScreenView.swift */; };
 		AC3B4F7633FDF2DF7C516CE8 /* GameSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666A2EB0B72CDEBFA4A80698 /* GameSearchViewModel.swift */; };
 		D2781A05E992FDD39274957B /* EditGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799EF2B29838C67A232DD685 /* EditGameView.swift */; };
+		CD2C8059B49344C18A466639 /* AvatarCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C774A8CD8E48CB937B6514 /* AvatarCropView.swift */; };
+		5F4202BE9463491FAAA0AD52 /* AvatarImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2272426AD5F43D1BF9AEBA1 /* AvatarImageProcessor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +54,8 @@
 		6E6F26CCBBBE30338E7697D6 /* IGDBGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGDBGame.swift; sourceTree = "<group>"; };
 		D9007A9F8C668EBCD4BBB789 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
 		E4003CC27CB6A6414E33C627 /* IGDBAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGDBAuthService.swift; sourceTree = "<group>"; };
+		95C774A8CD8E48CB937B6514 /* AvatarCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCropView.swift; sourceTree = "<group>"; };
+		D2272426AD5F43D1BF9AEBA1 /* AvatarImageProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarImageProcessor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -90,6 +94,7 @@
 			children = (
 				E4003CC27CB6A6414E33C627 /* IGDBAuthService.swift */,
 				36E8F5ADCF15F70E0F6B066A /* IGDBService.swift */,
+				D2272426AD5F43D1BF9AEBA1 /* AvatarImageProcessor.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -146,6 +151,7 @@
 				52ECC5C02FDAE00000C76002 /* GameCardView.swift */,
 				52ECC5C22FDAE00000C76002 /* GamesScreenView.swift */,
 				52ECC5B82FD9E5F400C76002 /* ProfileScreenView.swift */,
+				95C774A8CD8E48CB937B6514 /* AvatarCropView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -289,6 +295,8 @@
 				41999CC37969ED1B1DDDB134 /* IGDBService.swift in Sources */,
 				AC3B4F7633FDF2DF7C516CE8 /* GameSearchViewModel.swift in Sources */,
 				D2781A05E992FDD39274957B /* EditGameView.swift in Sources */,
+				CD2C8059B49344C18A466639 /* AvatarCropView.swift in Sources */,
+				5F4202BE9463491FAAA0AD52 /* AvatarImageProcessor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
