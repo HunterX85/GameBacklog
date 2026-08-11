@@ -12,6 +12,13 @@ struct ProfileScreenView: View {
     @StateObject private var viewModel = ProfileViewModel()
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var showSnackbar = false
+    @State private var cropTarget: CropTarget?
+    @State private var showPhotoLoadError = false
+
+    private struct CropTarget: Identifiable {
+        let id = UUID()
+        let image: UIImage
+    }
 
     var body: some View {
         Form {
@@ -71,15 +78,26 @@ struct ProfileScreenView: View {
             }
         }
         .formStyle(.grouped)
-        .onTapGesture {
-            hideKeyboard()
+        .scrollDismissesKeyboard(.interactively)
+        .task(id: selectedPhoto) {
+            await loadSelectedPhoto()
         }
-        .onChange(of: selectedPhoto) { _, newPhoto in
-            Task {
-                if let data = try? await newPhoto?.loadTransferable(type: Data.self) {
-                    viewModel.profilePhotoData = data
+        .fullScreenCover(item: $cropTarget) { target in
+            AvatarCropView(
+                image: target.image,
+                onCancel: {
+                    cropTarget = nil
+                },
+                onCrop: { croppedData in
+                    viewModel.profilePhotoData = croppedData
+                    cropTarget = nil
                 }
-            }
+            )
+        }
+        .alert(String(localized: "profile.photo.loadError.title"), isPresented: $showPhotoLoadError) {
+            Button(String(localized: "profile.button.ok"), role: .cancel) {}
+        } message: {
+            Text(String(localized: "profile.photo.loadError.message"))
         }
         .overlay(alignment: .bottom) {
             if showSnackbar {
@@ -153,6 +171,22 @@ struct ProfileScreenView: View {
             .joined()
 
         return initials.isEmpty ? String(localized: "profile.photo.placeholderInitials") : initials.uppercased()
+    }
+
+    private func loadSelectedPhoto() async {
+        guard let selectedPhoto else { return }
+        defer { self.selectedPhoto = nil }
+
+        do {
+            guard let data = try await selectedPhoto.loadTransferable(type: Data.self),
+                  let image = AvatarImageProcessor.downsampledImage(from: data) else {
+                showPhotoLoadError = true
+                return
+            }
+            cropTarget = CropTarget(image: image)
+        } catch {
+            showPhotoLoadError = true
+        }
     }
 
     private func hideKeyboard() {
