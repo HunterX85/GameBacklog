@@ -15,7 +15,7 @@ struct GameCardView: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
-            CoverPlaceholder(tint: game.status.tint)
+            GameCover(tint: game.status.tint, coverURL: game.coverURL)
 
             VStack(alignment: .leading, spacing: 8) {
                 header
@@ -83,27 +83,36 @@ struct GameCardView: View {
     }
 }
 
-// MARK: - Cover placeholder
+// MARK: - Cover art
 
-/// Stand-in for box art: a tinted gradient tile with a controller glyph.
-private struct CoverPlaceholder: View {
+/// IGDB box art when available, otherwise a tinted gradient tile with a
+/// controller glyph — the same stand-in used before games carried real covers.
+private struct GameCover: View {
     let tint: Color
+    let coverURL: URL?
 
     var body: some View {
-        RoundedRectangle(cornerRadius: 14, style: .continuous)
-            .fill(
-                LinearGradient(
-                    colors: [tint.opacity(0.85), tint.opacity(0.45)],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
+        ZStack {
+            LinearGradient(
+                colors: [tint.opacity(0.85), tint.opacity(0.45)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
             )
-            .frame(width: 72, height: 96)
-            .overlay(
+
+            if let coverURL {
+                AsyncImage(url: coverURL) { phase in
+                    if case .success(let image) = phase {
+                        image.resizable().aspectRatio(contentMode: .fill)
+                    }
+                }
+            } else {
                 Image(systemName: "gamecontroller.fill")
                     .font(.system(size: 26, weight: .semibold))
                     .foregroundStyle(.white.opacity(0.9))
-            )
+            }
+        }
+        .frame(width: 72, height: 96)
+        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
     }
 }
 
@@ -156,7 +165,7 @@ struct GameProgressBar: View {
 
 #Preview {
     VStack(spacing: 16) {
-        ForEach(GameListViewModel.sampleGames) { game in
+        ForEach(Game.samples) { game in
             GameCardView(game: game)
         }
     }

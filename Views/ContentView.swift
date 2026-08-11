@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// Tabs hosted by the custom floating tab bar.
 enum AppTab: String, CaseIterable, Identifiable {
@@ -33,7 +34,6 @@ enum AppTab: String, CaseIterable, Identifiable {
 }
 
 struct ContentView: View {
-    @StateObject private var viewModel = GameListViewModel()
     @State private var selectedTab: AppTab = .games
 
     var body: some View {
@@ -54,7 +54,7 @@ struct ContentView: View {
     private var content: some View {
         switch selectedTab {
         case .games:
-            GamesScreenView(viewModel: viewModel)
+            GamesScreenView()
         case .profile:
             NavigationStack { ProfileScreenView() }
         case .settings:
@@ -103,4 +103,5 @@ struct FloatingTabBar: View {
 
 #Preview {
     ContentView()
+        .modelContainer(for: Game.self, inMemory: true)
 }
