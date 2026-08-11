@@ -6,23 +6,58 @@
 //
 
 import SwiftUI
+import SwiftData
+
+/// Top-level filter shown as a segmented control on the Games screen.
+enum GameFilter: String, CaseIterable, Identifiable {
+    case all
+    case backlog
+    case playing
+    case completed
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .all:       String(localized: "filter.all")
+        case .backlog:   String(localized: "filter.backlog")
+        case .playing:   String(localized: "filter.playing")
+        case .completed: String(localized: "filter.completed")
+        }
+    }
+
+    /// Status this filter maps to, or `nil` for the catch-all `.all` case.
+    var matchingStatus: GameStatus? {
+        switch self {
+        case .all:       nil
+        case .backlog:   .backlog
+        case .playing:   .playing
+        case .completed: .completed
+        }
+    }
+}
 
 /// The Games tab: a scrollable backlog with a custom large-title header and a
 /// segmented filter control. Built without `List`/`navigationTitle` so the
 /// layout can match the mockup pixel-for-pixel.
 struct GamesScreenView: View {
-    @ObservedObject var viewModel: GameListViewModel
+    @Query(sort: \Game.dateAdded) private var games: [Game]
+    @State private var filter: GameFilter = .all
     @State private var showingAddGame = false
 
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
                 header
-                GameFilterBar(selection: $viewModel.filter)
+                GameFilterBar(selection: $filter)
 
-                LazyVStack(spacing: 16) {
-                    ForEach(viewModel.filteredGames) { game in
-                        GameCardView(game: game)
+                if filteredGames.isEmpty {
+                    EmptyGamesView(hasAnyGames: !games.isEmpty)
+                } else {
+                    LazyVStack(spacing: 16) {
+                        ForEach(filteredGames) { game in
+                            GameCardView(game: game)
+                        }
                     }
                 }
             }
@@ -34,8 +69,20 @@ struct GamesScreenView: View {
         .background(Color(.systemGroupedBackground))
         .scrollIndicators(.hidden)
         .sheet(isPresented: $showingAddGame) {
-            AddGameView(viewModel: viewModel)
+            AddGameView()
         }
+    }
+
+    // MARK: Derived state
+
+    /// Games matching the currently selected filter, preserving fetch order.
+    private var filteredGames: [Game] {
+        guard let status = filter.matchingStatus else { return games }
+        return games.filter { $0.status == status }
+    }
+
+    private var completedCount: Int {
+        games.lazy.filter { $0.status == .completed }.count
     }
 
     // MARK: Header
@@ -46,7 +93,7 @@ struct GamesScreenView: View {
                 Text(String(localized: "app.title"))
                     .font(.largeTitle.bold())
 
-                Text(subtitle)
+                subtitle
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
@@ -68,12 +115,11 @@ struct GamesScreenView: View {
         }
     }
 
-    private var subtitle: String {
-        String(
-            format: String(localized: "games.subtitle"),
-            viewModel.totalCount,
-            viewModel.completedCount
-        )
+    /// `^[...](inflect: true)` triggers Foundation's automatic grammar
+    /// agreement so "1 game" / "2 games" resolves correctly instead of the
+    /// plain `%lld games` this replaced, which was always plural.
+    private var subtitle: Text {
+        Text("^[\(games.count) game](inflect: true) • \(completedCount) completed")
     }
 }
 
@@ -116,6 +162,42 @@ struct GameFilterBar: View {
     }
 }
 
+// MARK: - Empty state
+
+/// Shown when the backlog has no games yet, or when the current filter has
+/// no matches — the two cases get different copy so it's clear which one it is.
+private struct EmptyGamesView: View {
+    let hasAnyGames: Bool
+
+    var body: some View {
+        VStack(spacing: 12) {
+            Image(systemName: hasAnyGames ? "line.3.horizontal.decrease.circle" : "gamecontroller")
+                .font(.system(size: 40, weight: .medium))
+                .foregroundStyle(.secondary)
+
+            Text(hasAnyGames ? String(localized: "games.empty.filtered.title") : String(localized: "games.empty.title"))
+                .font(.headline)
+
+            Text(hasAnyGames ? String(localized: "games.empty.filtered.subtitle") : String(localized: "games.empty.subtitle"))
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 60)
+        .padding(.horizontal, 32)
+    }
+}
+
 #Preview {
-    GamesScreenView(viewModel: GameListViewModel())
+    GamesScreenView()
+        .modelContainer(for: Game.self, inMemory: true)
+}
+
+#Preview("With games") {
+    let container = try! ModelContainer(for: Game.self, configurations: .init(isStoredInMemoryOnly: true))
+    Game.samples.forEach { container.mainContext.insert($0) }
+
+    return GamesScreenView()
+        .modelContainer(container)
 }

@@ -161,12 +161,42 @@
         }
       }
     },
-    "games.subtitle" : {
+    "games.empty.filtered.subtitle" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld games • %lld completed"
+            "value" : "Try a different filter"
+          }
+        }
+      }
+    },
+    "games.empty.filtered.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No games here"
+          }
+        }
+      }
+    },
+    "games.empty.subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap + to add your first game"
+          }
+        }
+      }
+    },
+    "games.empty.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No games yet"
           }
         }
       }

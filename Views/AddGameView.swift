@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AddGameView: View {
-    @ObservedObject var viewModel: GameListViewModel
     @StateObject private var search = GameSearchViewModel()
     @Environment(\.dismiss) var dismiss
+    @Environment(\.modelContext) private var modelContext
     @FocusState private var searchFieldFocused: Bool
 
     @State private var selectedGame: IGDBGame?
@@ -199,7 +200,20 @@ struct AddGameView: View {
 
     private func addGame() {
         guard let selectedGame else { return }
-        viewModel.addGame(title: selectedGame.name, platform: selectedPlatform, status: status)
+        // Progress tracking isn't wired up yet — every new game starts at 0
+        // regardless of status until that's designed separately.
+        let game = Game(
+            title: selectedGame.name,
+            platform: selectedPlatform,
+            status: status,
+            progress: 0,
+            activity: String(localized: "activity.justAdded"),
+            coverURL: selectedGame.cover?.url
+        )
+        modelContext.insert(game)
+        // Autosave is timing-dependent (ties to scene-phase transitions) —
+        // save explicitly so the game survives an immediate force-quit.
+        try? modelContext.save()
         dismiss()
     }
 }
@@ -269,5 +283,6 @@ private struct CoverThumbnail: View {
 }
 
 #Preview {
-    AddGameView(viewModel: GameListViewModel())
+    AddGameView()
+        .modelContainer(for: Game.self, inMemory: true)
 }
