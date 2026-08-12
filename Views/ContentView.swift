@@ -58,10 +58,7 @@ struct ContentView: View {
         case .profile:
             NavigationStack { ProfileScreenView() }
         case .settings:
-            NavigationStack {
-                Text(String(localized: "tab.settings"))
-                    .navigationTitle(String(localized: "tab.settings"))
-            }
+            NavigationStack { SettingsScreenView() }
         }
     }
 }

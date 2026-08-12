@@ -6,5 +6,9 @@
 	<string>$(IGDB_CLIENT_ID)</string>
 	<key>IGDBClientSecret</key>
 	<string>$(IGDB_CLIENT_SECRET)</string>
+	<key>SupabaseURLHost</key>
+	<string>$(SUPABASE_URL_HOST)</string>
+	<key>SupabasePublishableKey</key>
+	<string>$(SUPABASE_PUBLISHABLE_KEY)</string>
 </dict>
 </plist>
