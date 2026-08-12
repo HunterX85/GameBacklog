@@ -18,10 +18,14 @@
 		52ECC5BB2FD9E60400C76002 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC5BA2FD9E60400C76002 /* ProfileViewModel.swift */; };
 		52ECC5C12FDAE00000C76002 /* GameCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC5C02FDAE00000C76002 /* GameCardView.swift */; };
 		52ECC5C32FDAE00000C76002 /* GamesScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52ECC5C22FDAE00000C76002 /* GamesScreenView.swift */; };
-		AC3B4F7633FDF2DF7C516CE8 /* GameSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666A2EB0B72CDEBFA4A80698 /* GameSearchViewModel.swift */; };
-		D2781A05E992FDD39274957B /* EditGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799EF2B29838C67A232DD685 /* EditGameView.swift */; };
-		CD2C8059B49344C18A466639 /* AvatarCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C774A8CD8E48CB937B6514 /* AvatarCropView.swift */; };
 		5F4202BE9463491FAAA0AD52 /* AvatarImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2272426AD5F43D1BF9AEBA1 /* AvatarImageProcessor.swift */; };
+		6A066FA565361E07F7281837 /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = 97E37DBFB996C67B8FB73EDB /* Supabase */; };
+		7013366DAE74034F36219C17 /* SettingsScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53BFB65FF85C9F9A3B757B7B /* SettingsScreenView.swift */; };
+		A3E745239769651447B6454B /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CF17989DB3B01B4D624D5A /* AuthViewModel.swift */; };
+		AC3B4F7633FDF2DF7C516CE8 /* GameSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 666A2EB0B72CDEBFA4A80698 /* GameSearchViewModel.swift */; };
+		CD2C8059B49344C18A466639 /* AvatarCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C774A8CD8E48CB937B6514 /* AvatarCropView.swift */; };
+		D2781A05E992FDD39274957B /* EditGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799EF2B29838C67A232DD685 /* EditGameView.swift */; };
+		D420DEF2D8B79B869BDB47A1 /* SupabaseClientProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E43768221A582D9930AFEA1 /* SupabaseClientProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +42,7 @@
 		00E7EE53D6FF65F84A24E464 /* Secrets.xcconfig.template */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig.template; sourceTree = "<group>"; };
 		23C5423ECD4942B792543427 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		36E8F5ADCF15F70E0F6B066A /* IGDBService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGDBService.swift; sourceTree = "<group>"; };
+		3E43768221A582D9930AFEA1 /* SupabaseClientProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SupabaseClientProvider.swift; sourceTree = "<group>"; };
 		52471D462FD9ADA900503210 /* GameBacklogUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GameBacklogUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		52876F822FA6448800BCCA8B /* GameBacklog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameBacklog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52ECC5972FD9C38800C76002 /* AddGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGameView.swift; sourceTree = "<group>"; };
@@ -47,25 +52,31 @@
 		52ECC5B82FD9E5F400C76002 /* ProfileScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenView.swift; sourceTree = "<group>"; };
 		52ECC5BA2FD9E60400C76002 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		52ECC5BC2FD9EC8300C76002 /* GameBacklog.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = GameBacklog.xctestplan; sourceTree = "<group>"; };
-		799EF2B29838C67A232DD685 /* EditGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGameView.swift; sourceTree = "<group>"; };
 		52ECC5C02FDAE00000C76002 /* GameCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCardView.swift; sourceTree = "<group>"; };
 		52ECC5C22FDAE00000C76002 /* GamesScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamesScreenView.swift; sourceTree = "<group>"; };
+		53BFB65FF85C9F9A3B757B7B /* SettingsScreenView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SettingsScreenView.swift; sourceTree = "<group>"; };
 		666A2EB0B72CDEBFA4A80698 /* GameSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSearchViewModel.swift; sourceTree = "<group>"; };
 		6E6F26CCBBBE30338E7697D6 /* IGDBGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGDBGame.swift; sourceTree = "<group>"; };
-		D9007A9F8C668EBCD4BBB789 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
-		E4003CC27CB6A6414E33C627 /* IGDBAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGDBAuthService.swift; sourceTree = "<group>"; };
+		75CF17989DB3B01B4D624D5A /* AuthViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		799EF2B29838C67A232DD685 /* EditGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGameView.swift; sourceTree = "<group>"; };
 		95C774A8CD8E48CB937B6514 /* AvatarCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCropView.swift; sourceTree = "<group>"; };
 		D2272426AD5F43D1BF9AEBA1 /* AvatarImageProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarImageProcessor.swift; sourceTree = "<group>"; };
+		D9007A9F8C668EBCD4BBB789 /* Secrets.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Secrets.xcconfig; sourceTree = "<group>"; };
+		E4003CC27CB6A6414E33C627 /* IGDBAuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGDBAuthService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		52471D472FD9ADA900503210 /* GameBacklogUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = GameBacklogUITests;
 			sourceTree = "<group>";
 		};
 		52876F842FA6448800BCCA8B /* GameBacklog */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = GameBacklog;
 			sourceTree = "<group>";
 		};
@@ -83,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6A066FA565361E07F7281837 /* Supabase in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +107,7 @@
 				E4003CC27CB6A6414E33C627 /* IGDBAuthService.swift */,
 				36E8F5ADCF15F70E0F6B066A /* IGDBService.swift */,
 				D2272426AD5F43D1BF9AEBA1 /* AvatarImageProcessor.swift */,
+				3E43768221A582D9930AFEA1 /* SupabaseClientProvider.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -138,6 +151,7 @@
 			children = (
 				52ECC5BA2FD9E60400C76002 /* ProfileViewModel.swift */,
 				666A2EB0B72CDEBFA4A80698 /* GameSearchViewModel.swift */,
+				75CF17989DB3B01B4D624D5A /* AuthViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -152,6 +166,7 @@
 				52ECC5C22FDAE00000C76002 /* GamesScreenView.swift */,
 				52ECC5B82FD9E5F400C76002 /* ProfileScreenView.swift */,
 				95C774A8CD8E48CB937B6514 /* AvatarCropView.swift */,
+				53BFB65FF85C9F9A3B757B7B /* SettingsScreenView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -186,8 +201,6 @@
 				52471D472FD9ADA900503210 /* GameBacklogUITests */,
 			);
 			name = GameBacklogUITests;
-			packageProductDependencies = (
-			);
 			productName = GameBacklogUITests;
 			productReference = 52471D462FD9ADA900503210 /* GameBacklogUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -209,6 +222,7 @@
 			);
 			name = GameBacklog;
 			packageProductDependencies = (
+				97E37DBFB996C67B8FB73EDB /* Supabase */,
 			);
 			productName = GameBacklog;
 			productReference = 52876F822FA6448800BCCA8B /* GameBacklog.app */;
@@ -242,6 +256,9 @@
 			);
 			mainGroup = 52876F792FA6448800BCCA8B;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8827B4936256C9009F31FCA7 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 52876F832FA6448800BCCA8B /* Products */;
 			projectDirPath = "";
@@ -297,6 +314,9 @@
 				D2781A05E992FDD39274957B /* EditGameView.swift in Sources */,
 				CD2C8059B49344C18A466639 /* AvatarCropView.swift in Sources */,
 				5F4202BE9463491FAAA0AD52 /* AvatarImageProcessor.swift in Sources */,
+				D420DEF2D8B79B869BDB47A1 /* SupabaseClientProvider.swift in Sources */,
+				A3E745239769651447B6454B /* AuthViewModel.swift in Sources */,
+				7013366DAE74034F36219C17 /* SettingsScreenView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,6 +593,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8827B4936256C9009F31FCA7 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		97E37DBFB996C67B8FB73EDB /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8827B4936256C9009F31FCA7 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 52876F7A2FA6448800BCCA8B /* Project object */;
 }
