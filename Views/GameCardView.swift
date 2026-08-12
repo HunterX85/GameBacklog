@@ -6,14 +6,13 @@
 //
 
 import SwiftUI
-import SwiftData
 
 /// A single backlog entry rendered as an elevated card, matching the
 /// Games screen mockup. Composed of small, independently-previewable pieces.
 struct GameCardView: View {
     let game: Game
 
-    @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject private var gamesViewModel: GamesViewModel
     @State private var showingEdit = false
 
     var body: some View {
@@ -60,7 +59,7 @@ struct GameCardView: View {
                     Label(String(localized: "gameCard.action.update"), systemImage: "pencil")
                 }
                 Button(role: .destructive) {
-                    deleteGame()
+                    Task { await gamesViewModel.delete(id: game.id) }
                 } label: {
                     Label(String(localized: "gameCard.action.delete"), systemImage: "trash")
                 }
@@ -98,16 +97,6 @@ struct GameCardView: View {
         .padding(.top, 2)
     }
 
-    // MARK: Actions
-
-    private func deleteGame() {
-        modelContext.delete(game)
-        do {
-            try modelContext.save()
-        } catch {
-            assertionFailure("Failed to save game deletion: \(error)")
-        }
-    }
 }
 
 // MARK: - Cover art
@@ -191,9 +180,7 @@ struct GameProgressBar: View {
 }
 
 #Preview {
-    let container = try! ModelContainer(for: Game.self, configurations: .init(isStoredInMemoryOnly: true))
     let samples = Game.samples
-    samples.forEach { container.mainContext.insert($0) }
 
     return ScrollView {
         VStack(spacing: 16) {
@@ -204,5 +191,5 @@ struct GameProgressBar: View {
         .padding()
     }
     .background(Color(.systemGroupedBackground))
-    .modelContainer(container)
+    .environmentObject(GamesViewModel(previewGames: samples))
 }

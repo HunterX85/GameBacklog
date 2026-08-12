@@ -51,6 +51,16 @@
         }
       }
     },
+    "addGame.save.errorTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't save game"
+          }
+        }
+      }
+    },
     "addGame.search.change" : {
       "localizations" : {
         "en" : {

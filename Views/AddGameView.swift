@@ -6,17 +6,18 @@
 //
 
 import SwiftUI
-import SwiftData
 
 struct AddGameView: View {
     @StateObject private var search = GameSearchViewModel()
+    @EnvironmentObject private var gamesViewModel: GamesViewModel
     @Environment(\.dismiss) var dismiss
-    @Environment(\.modelContext) private var modelContext
     @FocusState private var searchFieldFocused: Bool
 
     @State private var selectedGame: IGDBGame?
     @State private var selectedPlatform: String = ""
     @State private var status: GameStatus = .backlog
+    @State private var isSaving = false
+    @State private var saveError: String?
 
     var body: some View {
         NavigationStack {
@@ -37,10 +38,14 @@ struct AddGameView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(String(localized: "addGame.button.add")) {
-                        addGame()
+                    if isSaving {
+                        ProgressView()
+                    } else {
+                        Button(String(localized: "addGame.button.add")) {
+                            Task { await addGame() }
+                        }
+                        .disabled(selectedGame == nil)
                     }
-                    .disabled(selectedGame == nil)
                 }
                 ToolbarItem(placement: .cancellationAction) {
                     Button(String(localized: "addGame.button.close")) {
@@ -53,6 +58,15 @@ struct AddGameView: View {
             await search.search()
         }
         .onAppear { searchFieldFocused = true }
+        .alert(String(localized: "addGame.save.errorTitle"), isPresented: saveErrorPresented) {
+            Button(String(localized: "profile.button.ok"), role: .cancel) {}
+        } message: {
+            Text(saveError ?? "")
+        }
+    }
+
+    private var saveErrorPresented: Binding<Bool> {
+        Binding(get: { saveError != nil }, set: { if !$0 { saveError = nil } })
     }
 
     // MARK: Search field
@@ -198,11 +212,11 @@ struct AddGameView: View {
         searchFieldFocused = true
     }
 
-    private func addGame() {
+    private func addGame() async {
         guard let selectedGame else { return }
         // Progress tracking isn't wired up yet — every new game starts at 0
         // regardless of status until that's designed separately.
-        let game = Game(
+        let draft = Game.Draft(
             title: selectedGame.name,
             platform: selectedPlatform,
             status: status,
@@ -214,15 +228,13 @@ struct AddGameView: View {
             // SwiftUI's diffing. De-duplicate once here rather than there.
             availablePlatforms: (selectedGame.platforms?.map(\.name) ?? []).uniqued()
         )
-        modelContext.insert(game)
-        // Autosave is timing-dependent (ties to scene-phase transitions) —
-        // save explicitly so the game survives an immediate force-quit.
-        do {
-            try modelContext.save()
-        } catch {
-            assertionFailure("Failed to save new game: \(error)")
+        isSaving = true
+        defer { isSaving = false }
+        if await gamesViewModel.add(draft) {
+            dismiss()
+        } else {
+            saveError = gamesViewModel.errorMessage
         }
-        dismiss()
     }
 }
 
@@ -301,5 +313,5 @@ struct CoverThumbnail: View {
 
 #Preview {
     AddGameView()
-        .modelContainer(for: Game.self, inMemory: true)
+        .environmentObject(GamesViewModel(previewGames: []))
 }
