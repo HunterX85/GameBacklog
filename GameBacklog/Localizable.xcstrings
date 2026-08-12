@@ -171,6 +171,16 @@
         }
       }
     },
+    "filter.dropped" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dropped"
+          }
+        }
+      }
+    },
     "filter.playing" : {
       "localizations" : {
         "en" : {

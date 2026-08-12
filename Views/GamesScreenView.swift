@@ -14,6 +14,7 @@ enum GameFilter: String, CaseIterable, Identifiable {
     case backlog
     case playing
     case completed
+    case dropped
 
     var id: String { rawValue }
 
@@ -23,6 +24,7 @@ enum GameFilter: String, CaseIterable, Identifiable {
         case .backlog:   String(localized: "filter.backlog")
         case .playing:   String(localized: "filter.playing")
         case .completed: String(localized: "filter.completed")
+        case .dropped:   String(localized: "filter.dropped")
         }
     }
 
@@ -33,6 +35,7 @@ enum GameFilter: String, CaseIterable, Identifiable {
         case .backlog:   .backlog
         case .playing:   .playing
         case .completed: .completed
+        case .dropped:   .dropped
         }
     }
 }
@@ -125,40 +128,49 @@ struct GamesScreenView: View {
 
 // MARK: - Filter bar
 
-/// Segmented pill control with a sliding white selection indicator driven by
-/// `matchedGeometryEffect` for a smooth, native-feeling transition.
+/// Horizontally scrolling pill control with a sliding white selection
+/// indicator driven by `matchedGeometryEffect` for a smooth, native-feeling
+/// transition. Chips size to their own text instead of splitting the width
+/// equally, so adding more filters (e.g. `.dropped`) doesn't squeeze existing
+/// ones — it just extends how far the row scrolls.
 struct GameFilterBar: View {
     @Binding var selection: GameFilter
     @Namespace private var namespace
 
     var body: some View {
-        HStack(spacing: 0) {
-            ForEach(GameFilter.allCases) { filter in
-                let isSelected = filter == selection
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 0) {
+                ForEach(GameFilter.allCases) { filter in
+                    let isSelected = filter == selection
 
-                Text(filter.title)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(isSelected ? .primary : .secondary)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 10)
-                    .background {
-                        if isSelected {
-                            Capsule()
-                                .fill(Color(.secondarySystemGroupedBackground))
-                                .shadow(color: .black.opacity(0.08), radius: 6, x: 0, y: 2)
-                                .matchedGeometryEffect(id: "selectedFilter", in: namespace)
-                        }
-                    }
-                    .contentShape(Capsule())
-                    .onTapGesture {
+                    Button {
                         withAnimation(.snappy(duration: 0.28)) {
                             selection = filter
                         }
+                    } label: {
+                        Text(filter.title)
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(isSelected ? .primary : .secondary)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 10)
+                            .background {
+                                if isSelected {
+                                    Capsule()
+                                        .fill(Color(.secondarySystemGroupedBackground))
+                                        .shadow(color: .black.opacity(0.08), radius: 6, x: 0, y: 2)
+                                        .matchedGeometryEffect(id: "selectedFilter", in: namespace)
+                                }
+                            }
+                            .contentShape(Capsule())
                     }
+                    .buttonStyle(.plain)
+                    // VoiceOver has no other way to tell which filter is active.
+                    .accessibilityAddTraits(isSelected ? .isSelected : [])
+                }
             }
+            .padding(4)
+            .background(Color(.tertiarySystemGroupedBackground), in: Capsule())
         }
-        .padding(4)
-        .background(Color(.tertiarySystemGroupedBackground), in: Capsule())
     }
 }
 
