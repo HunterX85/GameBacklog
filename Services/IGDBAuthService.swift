@@ -6,83 +6,68 @@
 //
 
 import Foundation
+import Supabase
 
-/// Obtains and caches the Twitch app-access token IGDB requires on every request.
+/// Obtains and caches the IGDB access token + client ID via the `igdb-token`
+/// Supabase Edge Function, which holds the actual Twitch client secret
+/// server-side — the app never sees it.
 ///
-/// IGDB has no auth endpoint of its own — tokens come from Twitch's Client
-/// Credentials Grant (`id.twitch.tv/oauth2/token`). Tokens live ~60 days, so
-/// an in-memory cache is enough; there's no need to persist across launches.
+/// Tokens live ~60 days, so an in-memory cache is enough; there's no need to
+/// persist across launches.
 actor IGDBAuthService {
     enum AuthError: Error {
-        case missingCredentials
-        case invalidResponse
+        case notConfigured
+    }
+
+    struct Credentials {
+        let accessToken: String
+        let clientID: String
     }
 
     private struct TokenResponse: Decodable {
         let accessToken: String
-        let expiresIn: Int
+        let clientID: String
+        let expiresAt: Int
 
         enum CodingKeys: String, CodingKey {
             case accessToken = "access_token"
-            case expiresIn = "expires_in"
+            case clientID = "client_id"
+            case expiresAt = "expires_at"
         }
     }
 
-    private let clientID: String
-    private let clientSecret: String
-    private let session: URLSession
+    private let client: SupabaseClient
+    private var cached: TokenResponse?
+    /// Dedupes concurrent callers that land while the cache is cold (e.g. two
+    /// searches racing right after launch) so they share one Edge Function
+    /// call instead of each firing their own — actor reentrancy means the
+    /// `await` below doesn't serialize them for free.
+    private var inFlightTask: Task<TokenResponse, Error>?
 
-    private var cachedToken: String?
-    private var expiresAt: Date?
-
-    init(session: URLSession = .shared) throws {
-        guard
-            let clientID = Bundle.main.igdbClientID,
-            let clientSecret = Bundle.main.igdbClientSecret,
-            !clientID.isEmpty, !clientSecret.isEmpty
-        else {
-            throw AuthError.missingCredentials
-        }
-        self.clientID = clientID
-        self.clientSecret = clientSecret
-        self.session = session
+    init(client: SupabaseClient? = SupabaseClientProvider.shared) throws {
+        guard let client else { throw AuthError.notConfigured }
+        self.client = client
     }
 
-    /// Returns a cached token if still valid, otherwise requests a fresh one.
-    func accessToken() async throws -> String {
-        if let cachedToken, let expiresAt, expiresAt > Date() {
-            return cachedToken
-        }
-        return try await fetchToken()
-    }
-
-    private func fetchToken() async throws -> String {
-        var request = URLRequest(url: URL(string: "https://id.twitch.tv/oauth2/token")!)
-        request.httpMethod = "POST"
-        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-
-        var body = URLComponents()
-        body.queryItems = [
-            URLQueryItem(name: "client_id", value: clientID),
-            URLQueryItem(name: "client_secret", value: clientSecret),
-            URLQueryItem(name: "grant_type", value: "client_credentials")
-        ]
-        request.httpBody = body.percentEncodedQuery?.data(using: .utf8)
-
-        let (data, response) = try await session.data(for: request)
-        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-            throw AuthError.invalidResponse
+    /// Returns cached credentials if the token is still valid, otherwise fetches fresh ones.
+    func credentials() async throws -> Credentials {
+        if let cached, TimeInterval(cached.expiresAt) > Date().timeIntervalSince1970 {
+            return Credentials(accessToken: cached.accessToken, clientID: cached.clientID)
         }
 
-        let decoded = try JSONDecoder().decode(TokenResponse.self, from: data)
-        cachedToken = decoded.accessToken
-        // Refresh a minute early so an in-flight request never races expiry.
-        expiresAt = Date().addingTimeInterval(TimeInterval(decoded.expiresIn) - 60)
-        return decoded.accessToken
-    }
-}
+        if let inFlightTask {
+            let response = try await inFlightTask.value
+            return Credentials(accessToken: response.accessToken, clientID: response.clientID)
+        }
 
-extension Bundle {
-    var igdbClientID: String? { object(forInfoDictionaryKey: "IGDBClientID") as? String }
-    var igdbClientSecret: String? { object(forInfoDictionaryKey: "IGDBClientSecret") as? String }
+        let task = Task<TokenResponse, Error> { [client] in
+            try await client.functions.invoke("igdb-token")
+        }
+        inFlightTask = task
+        defer { inFlightTask = nil }
+
+        let response = try await task.value
+        cached = response
+        return Credentials(accessToken: response.accessToken, clientID: response.clientID)
+    }
 }

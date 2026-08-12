@@ -13,32 +13,27 @@ final class IGDBService {
         case invalidResponse
     }
 
-    /// Shared instance so the underlying `IGDBAuthService`'s cached Twitch
-    /// token survives across `AddGameView` presentations instead of
-    /// re-authenticating every time the search sheet is opened.
+    /// Shared instance so the underlying `IGDBAuthService`'s cached token
+    /// survives across `AddGameView` presentations instead of re-fetching it
+    /// every time the search sheet is opened.
     static let shared: IGDBService? = try? IGDBService()
 
-    private let clientID: String
     private let auth: IGDBAuthService
     private let session: URLSession
 
     init(session: URLSession = .shared) throws {
-        guard let clientID = Bundle.main.igdbClientID, !clientID.isEmpty else {
-            throw IGDBAuthService.AuthError.missingCredentials
-        }
-        self.clientID = clientID
         self.session = session
-        self.auth = try IGDBAuthService(session: session)
+        self.auth = try IGDBAuthService()
     }
 
     /// Searches IGDB by title. Queries are sent in Apicalypse, IGDB's query language.
     func searchGames(query: String, limit: Int = 20) async throws -> [IGDBGame] {
-        let token = try await auth.accessToken()
+        let credentials = try await auth.credentials()
 
         var request = URLRequest(url: URL(string: "https://api.igdb.com/v4/games")!)
         request.httpMethod = "POST"
-        request.setValue(clientID, forHTTPHeaderField: "Client-ID")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue(credentials.clientID, forHTTPHeaderField: "Client-ID")
+        request.setValue("Bearer \(credentials.accessToken)", forHTTPHeaderField: "Authorization")
         request.setValue("text/plain", forHTTPHeaderField: "Content-Type")
 
         // Escape backslashes before quotes so neither can break out of the
