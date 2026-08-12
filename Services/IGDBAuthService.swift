@@ -38,6 +38,11 @@ actor IGDBAuthService {
 
     private let client: SupabaseClient
     private var cached: TokenResponse?
+    /// Dedupes concurrent callers that land while the cache is cold (e.g. two
+    /// searches racing right after launch) so they share one Edge Function
+    /// call instead of each firing their own — actor reentrancy means the
+    /// `await` below doesn't serialize them for free.
+    private var inFlightTask: Task<TokenResponse, Error>?
 
     init(client: SupabaseClient? = SupabaseClientProvider.shared) throws {
         guard let client else { throw AuthError.notConfigured }
@@ -49,7 +54,19 @@ actor IGDBAuthService {
         if let cached, TimeInterval(cached.expiresAt) > Date().timeIntervalSince1970 {
             return Credentials(accessToken: cached.accessToken, clientID: cached.clientID)
         }
-        let response: TokenResponse = try await client.functions.invoke("igdb-token")
+
+        if let inFlightTask {
+            let response = try await inFlightTask.value
+            return Credentials(accessToken: response.accessToken, clientID: response.clientID)
+        }
+
+        let task = Task<TokenResponse, Error> { [client] in
+            try await client.functions.invoke("igdb-token")
+        }
+        inFlightTask = task
+        defer { inFlightTask = nil }
+
+        let response = try await task.value
         cached = response
         return Credentials(accessToken: response.accessToken, clientID: response.clientID)
     }
