@@ -6,21 +6,23 @@
 //
 
 import SwiftUI
-import SwiftData
 
 /// Lets the user change an existing backlog entry's platform and status.
 ///
 /// Unlike `AddGameView`, the title/cover are fixed — there's no re-search,
-/// so edits are staged in local `@State` and only written back to the
-/// (already-persisted) `Game` when Save is tapped, not on every tap.
+/// so edits are staged in local `@State` and only written back through
+/// `GamesViewModel` when Save is tapped, not on every tap. `game` is a value
+/// snapshot, not a live reference, so this view never mutates it directly.
 struct EditGameView: View {
     let game: Game
 
+    @EnvironmentObject private var gamesViewModel: GamesViewModel
     @Environment(\.dismiss) var dismiss
-    @Environment(\.modelContext) private var modelContext
 
     @State private var selectedPlatform: String
     @State private var status: GameStatus
+    @State private var isSaving = false
+    @State private var saveError: String?
 
     init(game: Game) {
         self.game = game
@@ -68,8 +70,13 @@ struct EditGameView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(String(localized: "editGame.button.save")) {
-                        save()
+                    if isSaving {
+                        ProgressView()
+                    } else {
+                        Button(String(localized: "editGame.button.save")) {
+                            Task { await save() }
+                        }
+                        .disabled(!hasChanges)
                     }
                 }
                 ToolbarItem(placement: .cancellationAction) {
@@ -79,28 +86,39 @@ struct EditGameView: View {
                 }
             }
         }
+        .alert(String(localized: "addGame.save.errorTitle"), isPresented: saveErrorPresented) {
+            Button(String(localized: "profile.button.ok"), role: .cancel) {}
+        } message: {
+            Text(saveError ?? "")
+        }
     }
 
-    private func save() {
-        game.platform = selectedPlatform
-        game.status = status
-        do {
-            try modelContext.save()
-        } catch {
-            // `game` is a live reference, so this mutation is already visible
-            // in the UI even if the persist below fails — surfacing that
-            // mismatch loudly in debug beats a silent, confusing data loss.
-            assertionFailure("Failed to save game update: \(error)")
+    private var saveErrorPresented: Binding<Bool> {
+        Binding(get: { saveError != nil }, set: { if !$0 { saveError = nil } })
+    }
+
+    private var hasChanges: Bool {
+        selectedPlatform != game.platform || status != game.status
+    }
+
+    private func save() async {
+        // Nothing changed — skip the round trip rather than firing a no-op PATCH.
+        guard hasChanges else {
+            dismiss()
+            return
         }
-        dismiss()
+        isSaving = true
+        defer { isSaving = false }
+        let update = Game.Update(platform: selectedPlatform, status: status)
+        if await gamesViewModel.update(id: game.id, with: update) {
+            dismiss()
+        } else {
+            saveError = gamesViewModel.errorMessage
+        }
     }
 }
 
 #Preview {
-    let container = try! ModelContainer(for: Game.self, configurations: .init(isStoredInMemoryOnly: true))
-    let game = Game.samples[0]
-    container.mainContext.insert(game)
-
-    return EditGameView(game: game)
-        .modelContainer(container)
+    EditGameView(game: Game.samples[0])
+        .environmentObject(GamesViewModel(previewGames: Game.samples))
 }

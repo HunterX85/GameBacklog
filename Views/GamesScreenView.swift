@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
 
 /// Top-level filter shown as a segmented control on the Games screen.
 enum GameFilter: String, CaseIterable, Identifiable {
@@ -44,9 +43,17 @@ enum GameFilter: String, CaseIterable, Identifiable {
 /// segmented filter control. Built without `List`/`navigationTitle` so the
 /// layout can match the mockup pixel-for-pixel.
 struct GamesScreenView: View {
-    @Query(sort: \Game.dateAdded) private var games: [Game]
+    @StateObject private var viewModel: GamesViewModel
     @State private var filter: GameFilter = .all
     @State private var showingAddGame = false
+
+    init(viewModel: GamesViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
+
+    init() {
+        self.init(viewModel: GamesViewModel())
+    }
 
     var body: some View {
         ScrollView {
@@ -54,14 +61,24 @@ struct GamesScreenView: View {
                 header
                 GameFilterBar(selection: $filter)
 
-                if filteredGames.isEmpty {
-                    EmptyGamesView(hasAnyGames: !games.isEmpty)
+                if viewModel.isLoading && !viewModel.hasLoadedOnce {
+                    ProgressView()
+                        .padding(.vertical, 60)
+                } else if filteredGames.isEmpty {
+                    EmptyGamesView(hasAnyGames: !viewModel.games.isEmpty)
                 } else {
                     LazyVStack(spacing: 16) {
                         ForEach(filteredGames) { game in
                             GameCardView(game: game)
                         }
                     }
+                }
+
+                if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage)
+                        .font(.footnote)
+                        .foregroundStyle(.red)
+                        .multilineTextAlignment(.center)
                 }
             }
             .padding(.horizontal, 20)
@@ -71,21 +88,24 @@ struct GamesScreenView: View {
         }
         .background(Color(.systemGroupedBackground))
         .scrollIndicators(.hidden)
+        .refreshable { await viewModel.load() }
+        .task { await viewModel.loadIfNeeded() }
         .sheet(isPresented: $showingAddGame) {
             AddGameView()
         }
+        .environmentObject(viewModel)
     }
 
     // MARK: Derived state
 
     /// Games matching the currently selected filter, preserving fetch order.
     private var filteredGames: [Game] {
-        guard let status = filter.matchingStatus else { return games }
-        return games.filter { $0.status == status }
+        guard let status = filter.matchingStatus else { return viewModel.games }
+        return viewModel.games.filter { $0.status == status }
     }
 
     private var completedCount: Int {
-        games.lazy.filter { $0.status == .completed }.count
+        viewModel.games.lazy.filter { $0.status == .completed }.count
     }
 
     // MARK: Header
@@ -122,7 +142,7 @@ struct GamesScreenView: View {
     /// agreement so "1 game" / "2 games" resolves correctly instead of the
     /// plain `%lld games` this replaced, which was always plural.
     private var subtitle: Text {
-        Text("^[\(games.count) game](inflect: true) • \(completedCount) completed")
+        Text("^[\(viewModel.games.count) game](inflect: true) • \(completedCount) completed")
     }
 }
 
@@ -202,14 +222,9 @@ private struct EmptyGamesView: View {
 }
 
 #Preview {
-    GamesScreenView()
-        .modelContainer(for: Game.self, inMemory: true)
+    GamesScreenView(viewModel: GamesViewModel(previewGames: []))
 }
 
 #Preview("With games") {
-    let container = try! ModelContainer(for: Game.self, configurations: .init(isStoredInMemoryOnly: true))
-    Game.samples.forEach { container.mainContext.insert($0) }
-
-    return GamesScreenView()
-        .modelContainer(container)
+    GamesScreenView(viewModel: GamesViewModel(previewGames: Game.samples))
 }

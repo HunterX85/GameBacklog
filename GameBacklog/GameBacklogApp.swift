@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
 
 @main
 struct GameBacklogApp: App {
@@ -14,6 +13,5 @@ struct GameBacklogApp: App {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: Game.self)
     }
 }

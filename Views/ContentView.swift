@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
 
 /// Tabs hosted by the custom floating tab bar.
 enum AppTab: String, CaseIterable, Identifiable {
@@ -100,5 +99,4 @@ struct FloatingTabBar: View {
 
 #Preview {
     ContentView()
-        .modelContainer(for: Game.self, inMemory: true)
 }
