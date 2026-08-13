@@ -6,10 +6,17 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct SettingsScreenView: View {
     @StateObject private var authViewModel = AuthViewModel()
+    @StateObject private var settingsViewModel = SettingsViewModel()
+    @AppStorage(AppearanceMode.storageKey) private var appearanceMode: AppearanceMode = .system
     @FocusState private var focusedField: Field?
+
+    @State private var showingClearCacheConfirmation = false
+    @State private var showingImportPicker = false
+    @State private var exportedFile: ExportedFile?
 
     private enum Field {
         case email
@@ -25,11 +32,61 @@ struct SettingsScreenView: View {
                     signedOutContent
                 }
             }
+
+            Section(String(localized: "settings.section.appearance")) {
+                Picker(String(localized: "settings.section.appearance"), selection: $appearanceMode) {
+                    ForEach(AppearanceMode.allCases) { mode in
+                        Text(mode.title).tag(mode)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .labelsHidden()
+            }
+
+            Section {
+                dataManagementContent
+            } header: {
+                Text(String(localized: "settings.section.dataManagement"))
+            } footer: {
+                Text(String(localized: "settings.dataManagement.footer"))
+            }
+
+            Section {
+                aboutContent
+            } header: {
+                Text(String(localized: "settings.section.about"))
+            } footer: {
+                Text(String(localized: "settings.about.attribution"))
+            }
         }
         .formStyle(.grouped)
         .scrollDismissesKeyboard(.interactively)
         .navigationTitle(String(localized: "tab.settings"))
+        .confirmationDialog(
+            String(localized: "settings.dataManagement.cache.confirmTitle"),
+            isPresented: $showingClearCacheConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button(String(localized: "settings.dataManagement.cache.clear"), role: .destructive) {
+                settingsViewModel.clearCoverCache()
+            }
+        } message: {
+            Text(String(localized: "settings.dataManagement.cache.confirmMessage"))
+        }
+        .fileImporter(isPresented: $showingImportPicker, allowedContentTypes: [.json]) { result in
+            switch result {
+            case .success(let url):
+                Task { await settingsViewModel.importBacklog(from: url) }
+            case .failure(let error):
+                settingsViewModel.reportPickerFailure(error)
+            }
+        }
+        .sheet(item: $exportedFile) { file in
+            ShareSheet(activityItems: [file.url])
+        }
     }
+
+    // MARK: Account
 
     @ViewBuilder
     private var signedInContent: some View {
@@ -115,6 +172,129 @@ struct SettingsScreenView: View {
         .disabled(authViewModel.isLoading || !authViewModel.canSubmit)
         .accessibilityIdentifier("accountSubmit")
     }
+
+    // MARK: Data management
+
+    @ViewBuilder
+    private var dataManagementContent: some View {
+        LabeledContent(String(localized: "settings.dataManagement.cache.label"), value: settingsViewModel.formattedCacheSize)
+
+        Button(role: .destructive) {
+            showingClearCacheConfirmation = true
+        } label: {
+            Text(String(localized: "settings.dataManagement.cache.clear"))
+        }
+        .disabled(settingsViewModel.cacheByteCount == 0)
+
+        Button {
+            Task { await exportBacklog() }
+        } label: {
+            HStack {
+                Text(String(localized: "settings.dataManagement.export"))
+                if settingsViewModel.isExporting {
+                    Spacer()
+                    ProgressView()
+                }
+            }
+        }
+        .disabled(settingsViewModel.isExporting)
+        .accessibilityIdentifier("exportBacklog")
+
+        Button {
+            showingImportPicker = true
+        } label: {
+            HStack {
+                Text(String(localized: "settings.dataManagement.import"))
+                if settingsViewModel.isImporting {
+                    Spacer()
+                    ProgressView()
+                }
+            }
+        }
+        .disabled(settingsViewModel.isImporting)
+        .accessibilityIdentifier("importBacklog")
+
+        if let lastImportedCount = settingsViewModel.lastImportedCount {
+            Text("^[\(lastImportedCount) game](inflect: true) imported.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+        }
+
+        if let errorMessage = settingsViewModel.errorMessage {
+            Text(errorMessage)
+                .font(.footnote)
+                .foregroundStyle(.red)
+        }
+    }
+
+    private func exportBacklog() async {
+        guard let url = await settingsViewModel.exportBacklog() else { return }
+        exportedFile = ExportedFile(url: url)
+    }
+
+    // MARK: About
+
+    @ViewBuilder
+    private var aboutContent: some View {
+        LabeledContent(String(localized: "settings.about.version"), value: appVersionString)
+
+        Link(destination: URL(string: "https://www.igdb.com")!) {
+            externalLinkRow(String(localized: "settings.about.igdb"))
+        }
+
+        Link(destination: URL(string: "https://github.com/supabase/supabase-swift")!) {
+            externalLinkRow(String(localized: "settings.about.supabase"))
+        }
+    }
+
+    private func externalLinkRow(_ title: String) -> some View {
+        HStack {
+            Text(title)
+                .foregroundStyle(.primary)
+            Spacer()
+            Image(systemName: "arrow.up.forward")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private var appVersionString: String {
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "—"
+        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "—"
+        return "\(version) (\(build))"
+    }
+}
+
+// MARK: - Export share sheet
+
+private struct ExportedFile: Identifiable {
+    let id = UUID()
+    let url: URL
+}
+
+/// Thin wrapper presenting `UIActivityViewController` — SwiftUI's `ShareLink`
+/// can't be triggered programmatically after an async export completes, so
+/// this is driven by `.sheet(item:)` instead.
+private struct ShareSheet: UIViewControllerRepresentable {
+    let activityItems: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        // On iPad this presents as a popover, which crashes at runtime unless
+        // it has an anchor — this app builds for iPad too (TARGETED_DEVICE_FAMILY
+        // includes 2), so the anchor can't be skipped as iPhone-only dead code.
+        if let popover = controller.popoverPresentationController {
+            let window = UIApplication.shared.connectedScenes
+                .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+                .first
+            popover.sourceView = window
+            popover.sourceRect = CGRect(x: window?.bounds.midX ?? 0, y: window?.bounds.midY ?? 0, width: 0, height: 0)
+            popover.permittedArrowDirections = []
+        }
+        return controller
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
 #Preview {

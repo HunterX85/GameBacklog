@@ -34,6 +34,7 @@ enum AppTab: String, CaseIterable, Identifiable {
 
 struct ContentView: View {
     @State private var selectedTab: AppTab = .games
+    @AppStorage(AppearanceMode.storageKey) private var appearanceMode: AppearanceMode = .system
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -47,6 +48,7 @@ struct ContentView: View {
                 .padding(.horizontal, 40)
                 .padding(.bottom, 8)
         }
+        .preferredColorScheme(appearanceMode.colorScheme)
     }
 
     @ViewBuilder
