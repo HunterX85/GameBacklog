@@ -129,8 +129,27 @@ final class AuthViewModel: ObservableObject {
             // out locally just clears the now-orphaned session so the UI
             // reflects that immediately instead of on the next launch.
             try? await client.auth.signOut()
+        } catch let error as FunctionsError {
+            errorMessage = Self.message(for: error)
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+
+    /// `FunctionsError.httpError`'s own `localizedDescription` is just "Edge
+    /// Function returned a non-2xx status code: 401" — it drops the actual
+    /// body. Two shapes are possible: `delete-account` itself replies with
+    /// `{"error": "..."}`, but a request the Supabase gateway rejects before
+    /// the function ever runs (e.g. an already-expired JWT, since this
+    /// function has `verify_jwt` on) replies with `{"message": "..."}`
+    /// instead. Falls back to the generic description if neither key is present.
+    private static func message(for error: FunctionsError) -> String {
+        guard case .httpError(_, let data) = error,
+              let decoded = try? JSONDecoder().decode([String: String].self, from: data),
+              let serverMessage = decoded["error"] ?? decoded["message"]
+        else {
+            return error.localizedDescription
+        }
+        return serverMessage
     }
 }
