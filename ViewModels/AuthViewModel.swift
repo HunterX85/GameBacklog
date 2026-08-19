@@ -49,7 +49,18 @@ final class AuthViewModel: ObservableObject {
         guard let client else { return }
         authStateTask = Task { [weak self] in
             for await (_, session) in client.auth.authStateChanges {
-                self?.currentUserEmail = session?.user.email
+                // Anonymous sessions are internal plumbing for RLS (see
+                // GamesRepository) — never something the user "signed in" to.
+                // Observed in testing: `session.user.email` isn't reliably nil
+                // for one of these sessions, which let `isSignedIn` go true
+                // and exposed Sign Out / Delete Account for an account the
+                // user never actually created. Gate on `isAnonymous` directly
+                // instead of trusting email presence as a proxy for it.
+                guard let session, !session.user.isAnonymous else {
+                    self?.currentUserEmail = nil
+                    continue
+                }
+                self?.currentUserEmail = session.user.email
             }
         }
     }
@@ -93,6 +104,31 @@ final class AuthViewModel: ObservableObject {
         defer { isLoading = false }
         do {
             try await client.auth.signOut()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    /// Permanently deletes the signed-in user's account via the `delete-account`
+    /// Edge Function, which holds the service role key needed to remove the
+    /// `auth.users` row — the app's publishable key can't do that directly.
+    /// The user's games are removed automatically by the `ON DELETE CASCADE`
+    /// on `games.user_id`.
+    func deleteAccount() async {
+        guard let client else {
+            errorMessage = String(localized: "settings.account.notConfigured")
+            return
+        }
+        isLoading = true
+        errorMessage = nil
+        infoMessage = nil
+        defer { isLoading = false }
+        do {
+            try await client.functions.invoke("delete-account")
+            // The account is already gone server-side at this point; signing
+            // out locally just clears the now-orphaned session so the UI
+            // reflects that immediately instead of on the next launch.
+            try? await client.auth.signOut()
         } catch {
             errorMessage = error.localizedDescription
         }

@@ -17,6 +17,7 @@ struct SettingsScreenView: View {
     @State private var showingClearCacheConfirmation = false
     @State private var showingImportPicker = false
     @State private var exportedFile: ExportedFile?
+    @State private var showingDeleteAccountConfirmation = false
 
     private enum Field {
         case email
@@ -84,6 +85,17 @@ struct SettingsScreenView: View {
         .sheet(item: $exportedFile) { file in
             ShareSheet(activityItems: [file.url])
         }
+        .confirmationDialog(
+            String(localized: "settings.account.deleteAccount.confirmTitle"),
+            isPresented: $showingDeleteAccountConfirmation,
+            titleVisibility: .visible
+        ) {
+            Button(String(localized: "settings.account.deleteAccount"), role: .destructive) {
+                Task { await authViewModel.deleteAccount() }
+            }
+        } message: {
+            Text(String(localized: "settings.account.deleteAccount.confirmMessage"))
+        }
     }
 
     // MARK: Account
@@ -104,6 +116,20 @@ struct SettingsScreenView: View {
             }
         }
         .disabled(authViewModel.isLoading)
+
+        Button(role: .destructive) {
+            showingDeleteAccountConfirmation = true
+        } label: {
+            Text(String(localized: "settings.account.deleteAccount"))
+        }
+        .disabled(authViewModel.isLoading)
+        .accessibilityIdentifier("deleteAccount")
+
+        if let errorMessage = authViewModel.errorMessage {
+            Text(errorMessage)
+                .font(.footnote)
+                .foregroundStyle(.red)
+        }
     }
 
     @ViewBuilder
