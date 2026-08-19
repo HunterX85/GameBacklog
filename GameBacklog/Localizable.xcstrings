@@ -511,6 +511,36 @@
         }
       }
     },
+    "settings.account.deleteAccount" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Account"
+          }
+        }
+      }
+    },
+    "settings.account.deleteAccount.confirmMessage" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This permanently deletes your account and all games in your backlog. This can't be undone."
+          }
+        }
+      }
+    },
+    "settings.account.deleteAccount.confirmTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete your account?"
+          }
+        }
+      }
+    },
     "settings.account.email" : {
       "localizations" : {
         "en" : {
