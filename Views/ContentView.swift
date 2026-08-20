@@ -35,6 +35,9 @@ enum AppTab: String, CaseIterable, Identifiable {
 struct ContentView: View {
     @State private var selectedTab: AppTab = .games
     @AppStorage(AppearanceMode.storageKey) private var appearanceMode: AppearanceMode = .system
+    // Shared across tabs so Profile's locally-stored fields can be
+    // namespaced by the signed-in account — see ProfileViewModel.
+    @StateObject private var authViewModel = AuthViewModel()
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -48,6 +51,7 @@ struct ContentView: View {
                 .padding(.horizontal, 40)
                 .padding(.bottom, 8)
         }
+        .environmentObject(authViewModel)
         .preferredColorScheme(appearanceMode.colorScheme)
     }
 

@@ -9,7 +9,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct SettingsScreenView: View {
-    @StateObject private var authViewModel = AuthViewModel()
+    @EnvironmentObject private var authViewModel: AuthViewModel
     @StateObject private var settingsViewModel = SettingsViewModel()
     @AppStorage(AppearanceMode.storageKey) private var appearanceMode: AppearanceMode = .system
     @FocusState private var focusedField: Field?
@@ -335,4 +335,5 @@ private struct ShareSheet: UIViewControllerRepresentable {
     NavigationStack {
         SettingsScreenView()
     }
+    .environmentObject(AuthViewModel())
 }

@@ -32,6 +32,9 @@ final class AuthViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var infoMessage: String?
     @Published private(set) var currentUserEmail: String?
+    /// Namespaces per-device local storage (see `ProfileViewModel`) so it
+    /// doesn't leak between accounts signed into the same device.
+    @Published private(set) var currentUserID: UUID?
 
     var isSignedIn: Bool { currentUserEmail != nil }
 
@@ -58,9 +61,11 @@ final class AuthViewModel: ObservableObject {
                 // instead of trusting email presence as a proxy for it.
                 guard let session, !session.user.isAnonymous else {
                     self?.currentUserEmail = nil
+                    self?.currentUserID = nil
                     continue
                 }
                 self?.currentUserEmail = session.user.email
+                self?.currentUserID = session.user.id
             }
         }
     }
