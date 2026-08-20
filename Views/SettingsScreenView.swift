@@ -63,6 +63,11 @@ struct SettingsScreenView: View {
         }
         .formStyle(.grouped)
         .scrollDismissesKeyboard(.interactively)
+        // Reserves room for the floating tab bar overlay, which sits outside
+        // the normal safe-area system — see `FloatingTabBar.reservedHeight`.
+        .safeAreaInset(edge: .bottom) {
+            Color.clear.frame(height: FloatingTabBar.reservedHeight)
+        }
         .navigationTitle(String(localized: "tab.settings"))
         .confirmationDialog(
             String(localized: "settings.dataManagement.cache.confirmTitle"),

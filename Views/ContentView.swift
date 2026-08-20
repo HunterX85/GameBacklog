@@ -83,6 +83,12 @@ struct ContentView: View {
 
 /// Pill-shaped tab bar floating above the content, matching the mockup.
 struct FloatingTabBar: View {
+    /// The space the floating bar occupies above the device's own bottom
+    /// safe area — since it's a ZStack overlay rather than a real safe-area
+    /// inset, each screen must reserve this itself (via `.safeAreaInset`) so
+    /// its last row/field doesn't end up drawn underneath the bar.
+    static let reservedHeight: CGFloat = 76
+
     @Binding var selection: AppTab
 
     var body: some View {
