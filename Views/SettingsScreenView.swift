@@ -18,6 +18,7 @@ struct SettingsScreenView: View {
     @State private var showingImportPicker = false
     @State private var exportedFile: ExportedFile?
     @State private var showingDeleteAccountConfirmation = false
+    @State private var isPasswordVisible = false
 
     private enum Field {
         case email
@@ -158,7 +159,20 @@ struct SettingsScreenView: View {
             .contentShape(Rectangle())
             .onTapGesture { focusedField = .email }
 
-        SecureField(String(localized: "settings.account.password"), text: $authViewModel.password)
+        ZStack(alignment: .trailing) {
+            // Both fields stay mounted and overlap, toggling visibility
+            // rather than swapping one out for the other — swapping would
+            // give SecureField and TextField different view identities and
+            // drop keyboard focus every time the eye button is tapped.
+            Group {
+                if isPasswordVisible {
+                    TextField(String(localized: "settings.account.password"), text: $authViewModel.password)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                } else {
+                    SecureField(String(localized: "settings.account.password"), text: $authViewModel.password)
+                }
+            }
             .textContentType(authViewModel.mode == .signIn ? .password : .newPassword)
             .submitLabel(.go)
             .focused($focusedField, equals: .password)
@@ -172,6 +186,18 @@ struct SettingsScreenView: View {
             .accessibilityIdentifier("accountPassword")
             .contentShape(Rectangle())
             .onTapGesture { focusedField = .password }
+            .padding(.trailing, 28)
+
+            Button {
+                isPasswordVisible.toggle()
+            } label: {
+                Image(systemName: isPasswordVisible ? "eye.slash" : "eye")
+                    .foregroundStyle(.secondary)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: isPasswordVisible ? "settings.account.hidePassword" : "settings.account.showPassword"))
+            .accessibilityIdentifier("togglePasswordVisibility")
+        }
 
         if let errorMessage = authViewModel.errorMessage {
             Text(errorMessage)
