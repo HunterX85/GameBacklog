@@ -98,11 +98,12 @@ extension Game {
         }
     }
 
-    /// Fields the edit screen can change — title/cover/progress aren't
-    /// editable there yet, so there's nothing to send for them.
+    /// Fields the edit screen and the progress sheet can change — title/cover
+    /// aren't editable anywhere yet, so there's nothing to send for them.
     struct Update: Encodable {
         var platform: String
         var status: GameStatus
+        var progress: Double
     }
 }
 

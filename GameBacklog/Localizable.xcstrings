@@ -211,6 +211,16 @@
         }
       }
     },
+    "gameCard.action.progress" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update Progress"
+          }
+        }
+      }
+    },
     "gameCard.action.update" : {
       "localizations" : {
         "en" : {
@@ -867,6 +877,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Settings"
+          }
+        }
+      }
+    },
+    "updateProgress.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update Progress"
           }
         }
       }

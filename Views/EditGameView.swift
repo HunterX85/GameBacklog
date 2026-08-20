@@ -109,7 +109,7 @@ struct EditGameView: View {
         }
         isSaving = true
         defer { isSaving = false }
-        let update = Game.Update(platform: selectedPlatform, status: status)
+        let update = Game.Update(platform: selectedPlatform, status: status, progress: game.progress)
         if await gamesViewModel.update(id: game.id, with: update) {
             dismiss()
         } else {

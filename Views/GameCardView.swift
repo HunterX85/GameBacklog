@@ -14,6 +14,7 @@ struct GameCardView: View {
 
     @EnvironmentObject private var gamesViewModel: GamesViewModel
     @State private var showingEdit = false
+    @State private var showingProgress = false
 
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
@@ -39,6 +40,9 @@ struct GameCardView: View {
         .sheet(isPresented: $showingEdit) {
             EditGameView(game: game)
         }
+        .sheet(isPresented: $showingProgress) {
+            UpdateProgressView(game: game)
+        }
     }
 
     // MARK: Subviews
@@ -57,6 +61,13 @@ struct GameCardView: View {
                     showingEdit = true
                 } label: {
                     Label(String(localized: "gameCard.action.update"), systemImage: "pencil")
+                }
+                if game.status.showsProgress {
+                    Button {
+                        showingProgress = true
+                    } label: {
+                        Label(String(localized: "gameCard.action.progress"), systemImage: "gauge.with.dots.needle.50percent")
+                    }
                 }
                 Button(role: .destructive) {
                     Task { await gamesViewModel.delete(id: game.id) }

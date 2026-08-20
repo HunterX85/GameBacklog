@@ -31,6 +31,7 @@
 		75BDE56EBFCD4B84B49B7389 /* AppearanceMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD38EBF4D50240B6848C4996 /* AppearanceMode.swift */; };
 		51EAA161DEDA4EFA965EE4F0 /* BacklogExport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78517CFCED9041E8B05E5FCE /* BacklogExport.swift */; };
 		6A8ACFDBD5524398B1100602 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A08ABA4AC5A46428A6A0D21 /* SettingsViewModel.swift */; };
+		C49ED171922D47BBB32955DE /* UpdateProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711A4E75E02D40B29E91D475 /* UpdateProgressView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		6E6F26CCBBBE30338E7697D6 /* IGDBGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGDBGame.swift; sourceTree = "<group>"; };
 		75CF17989DB3B01B4D624D5A /* AuthViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		799EF2B29838C67A232DD685 /* EditGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditGameView.swift; sourceTree = "<group>"; };
+		711A4E75E02D40B29E91D475 /* UpdateProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateProgressView.swift; sourceTree = "<group>"; };
 		853D00071DF508D24FEE37EB /* GamesViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GamesViewModel.swift; sourceTree = "<group>"; };
 		95C774A8CD8E48CB937B6514 /* AvatarCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarCropView.swift; sourceTree = "<group>"; };
 		AF77E532BAF3B6E087707718 /* GamesRepository.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GamesRepository.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				52ECC5B82FD9E5F400C76002 /* ProfileScreenView.swift */,
 				95C774A8CD8E48CB937B6514 /* AvatarCropView.swift */,
 				53BFB65FF85C9F9A3B757B7B /* SettingsScreenView.swift */,
+				711A4E75E02D40B29E91D475 /* UpdateProgressView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -337,6 +340,7 @@
 				75BDE56EBFCD4B84B49B7389 /* AppearanceMode.swift in Sources */,
 				51EAA161DEDA4EFA965EE4F0 /* BacklogExport.swift in Sources */,
 				6A8ACFDBD5524398B1100602 /* SettingsViewModel.swift in Sources */,
+				C49ED171922D47BBB32955DE /* UpdateProgressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
