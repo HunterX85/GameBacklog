@@ -9,6 +9,7 @@ import SwiftUI
 import PhotosUI
 
 struct ProfileScreenView: View {
+    @EnvironmentObject private var authViewModel: AuthViewModel
     @StateObject private var viewModel = ProfileViewModel()
     @State private var selectedPhoto: PhotosPickerItem?
     @State private var showSnackbar = false
@@ -30,6 +31,11 @@ struct ProfileScreenView: View {
                         Label(String(localized: "profile.button.changePhoto"), systemImage: "photo")
                             .font(.subheadline.weight(.semibold))
                     }
+                    // Without an explicit style, Form/List extends this
+                    // control's tap target to the whole row — including the
+                    // photo above it — since it's the only interactive view
+                    // in the section. `.plain` limits it to the label itself.
+                    .buttonStyle(.plain)
                     .accessibilityIdentifier("changeProfilePhoto")
                 }
                 .frame(maxWidth: .infinity)
@@ -81,6 +87,9 @@ struct ProfileScreenView: View {
         .scrollDismissesKeyboard(.interactively)
         .task(id: selectedPhoto) {
             await loadSelectedPhoto()
+        }
+        .onChange(of: authViewModel.currentUserID, initial: true) { _, userID in
+            viewModel.reload(for: userID)
         }
         .fullScreenCover(item: $cropTarget) { target in
             AvatarCropView(
@@ -198,4 +207,5 @@ struct ProfileScreenView: View {
     NavigationStack {
         ProfileScreenView()
     }
+    .environmentObject(AuthViewModel())
 }

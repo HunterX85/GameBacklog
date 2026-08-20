@@ -43,6 +43,7 @@ enum GameFilter: String, CaseIterable, Identifiable {
 /// segmented filter control. Built without `List`/`navigationTitle` so the
 /// layout can match the mockup pixel-for-pixel.
 struct GamesScreenView: View {
+    @EnvironmentObject private var authViewModel: AuthViewModel
     @StateObject private var viewModel: GamesViewModel
     @State private var filter: GameFilter = .all
     @State private var showingAddGame = false
@@ -90,6 +91,15 @@ struct GamesScreenView: View {
         .scrollIndicators(.hidden)
         .refreshable { await viewModel.load() }
         .task { await viewModel.loadIfNeeded() }
+        // Games now stays mounted for the app's lifetime instead of being
+        // torn down on every tab switch (see ContentView), so the sign-in
+        // teardown/rebuild this used to piggyback on for a fresh fetch no
+        // longer happens on its own — force a reload whenever the signed-in
+        // account actually changes. `loadIfNeeded()` above already covers
+        // the very first load, so this only reacts to later changes.
+        .onChange(of: authViewModel.currentUserID) { _, _ in
+            Task { await viewModel.load() }
+        }
         .sheet(isPresented: $showingAddGame) {
             AddGameView()
         }
@@ -223,8 +233,10 @@ private struct EmptyGamesView: View {
 
 #Preview {
     GamesScreenView(viewModel: GamesViewModel(previewGames: []))
+        .environmentObject(AuthViewModel())
 }
 
 #Preview("With games") {
     GamesScreenView(viewModel: GamesViewModel(previewGames: Game.samples))
+        .environmentObject(AuthViewModel())
 }

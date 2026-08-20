@@ -9,7 +9,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct SettingsScreenView: View {
-    @StateObject private var authViewModel = AuthViewModel()
+    @EnvironmentObject private var authViewModel: AuthViewModel
     @StateObject private var settingsViewModel = SettingsViewModel()
     @AppStorage(AppearanceMode.storageKey) private var appearanceMode: AppearanceMode = .system
     @FocusState private var focusedField: Field?
@@ -151,6 +151,12 @@ struct SettingsScreenView: View {
             .focused($focusedField, equals: .email)
             .onSubmit { focusedField = .password }
             .accessibilityIdentifier("accountEmail")
+            // A List row's own tap gesture competes with the TextField's for
+            // the first tap, so tapping empty row space next to short/empty
+            // text sometimes just selects the row instead of focusing it.
+            // Driving focus explicitly here makes the whole row responsive.
+            .contentShape(Rectangle())
+            .onTapGesture { focusedField = .email }
 
         SecureField(String(localized: "settings.account.password"), text: $authViewModel.password)
             .textContentType(authViewModel.mode == .signIn ? .password : .newPassword)
@@ -164,6 +170,8 @@ struct SettingsScreenView: View {
                 }
             }
             .accessibilityIdentifier("accountPassword")
+            .contentShape(Rectangle())
+            .onTapGesture { focusedField = .password }
 
         if let errorMessage = authViewModel.errorMessage {
             Text(errorMessage)
@@ -327,4 +335,5 @@ private struct ShareSheet: UIViewControllerRepresentable {
     NavigationStack {
         SettingsScreenView()
     }
+    .environmentObject(AuthViewModel())
 }

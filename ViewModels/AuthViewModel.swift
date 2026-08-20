@@ -32,6 +32,9 @@ final class AuthViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var infoMessage: String?
     @Published private(set) var currentUserEmail: String?
+    /// Namespaces per-device local storage (see `ProfileViewModel`) so it
+    /// doesn't leak between accounts signed into the same device.
+    @Published private(set) var currentUserID: UUID?
 
     var isSignedIn: Bool { currentUserEmail != nil }
 
@@ -58,9 +61,11 @@ final class AuthViewModel: ObservableObject {
                 // instead of trusting email presence as a proxy for it.
                 guard let session, !session.user.isAnonymous else {
                     self?.currentUserEmail = nil
+                    self?.currentUserID = nil
                     continue
                 }
                 self?.currentUserEmail = session.user.email
+                self?.currentUserID = session.user.id
             }
         }
     }
@@ -87,12 +92,32 @@ final class AuthViewModel: ObservableObject {
             case .signIn:
                 try await client.auth.signIn(email: trimmedEmail, password: password)
             case .signUp:
-                let response = try await client.auth.signUp(email: trimmedEmail, password: password)
+                // Without this, the confirmation email links to Supabase's
+                // configured Site URL, which defaults to localhost — dead end
+                // on a phone. This custom scheme is handled by `onOpenURL` in
+                // GameBacklogApp and must also be added to the Supabase
+                // project's Authentication > URL Configuration > Redirect URLs.
+                let response = try await client.auth.signUp(
+                    email: trimmedEmail,
+                    password: password,
+                    redirectTo: URL(string: "gamebacklog://auth-confirm")
+                )
                 if response.session == nil {
                     infoMessage = String(localized: "settings.account.confirmEmail")
                 }
             }
             password = ""
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    /// Completes the session for a Supabase auth deep link (email
+    /// confirmation) opened via the app's `gamebacklog://` URL scheme.
+    func handleAuthCallback(url: URL) async {
+        guard let client else { return }
+        do {
+            try await client.auth.session(from: url)
         } catch {
             errorMessage = error.localizedDescription
         }
