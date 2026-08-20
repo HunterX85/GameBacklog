@@ -84,11 +84,14 @@ struct GamesScreenView: View {
             }
             .padding(.horizontal, 20)
             .padding(.top, 8)
-            // Leave room for the floating tab bar.
-            .padding(.bottom, 120)
         }
         .background(Color(.systemGroupedBackground))
         .scrollIndicators(.hidden)
+        // Reserves room for the floating tab bar overlay, which sits outside
+        // the normal safe-area system — see `FloatingTabBar.reservedHeight`.
+        .safeAreaInset(edge: .bottom) {
+            Color.clear.frame(height: FloatingTabBar.reservedHeight)
+        }
         .refreshable { await viewModel.load() }
         .task { await viewModel.loadIfNeeded() }
         // Games now stays mounted for the app's lifetime instead of being

@@ -85,6 +85,15 @@ struct ProfileScreenView: View {
         }
         .formStyle(.grouped)
         .scrollDismissesKeyboard(.interactively)
+        // Reserves room for the floating tab bar overlay, which sits outside
+        // the normal safe-area system — see `FloatingTabBar.reservedHeight`.
+        // Also keeps the focused Email field from ending up hidden behind
+        // the keyboard, since the Form's own keyboard-avoidance now has
+        // this extra space to scroll into instead of stopping right at the
+        // tab bar's visual edge.
+        .safeAreaInset(edge: .bottom) {
+            Color.clear.frame(height: FloatingTabBar.reservedHeight)
+        }
         .task(id: selectedPhoto) {
             await loadSelectedPhoto()
         }
