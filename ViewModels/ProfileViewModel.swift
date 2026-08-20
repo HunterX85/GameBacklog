@@ -8,7 +8,8 @@
 import Foundation
 import Combine
 
-class ProfileViewModel: ObservableObject {
+@MainActor
+final class ProfileViewModel: ObservableObject {
     @Published var firstName: String = ""
     @Published var lastName: String = ""
     @Published var nickname: String = ""

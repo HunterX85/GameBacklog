@@ -112,6 +112,17 @@ final class AuthViewModel: ObservableObject {
         }
     }
 
+    /// Completes the session for a Supabase auth deep link (email
+    /// confirmation) opened via the app's `gamebacklog://` URL scheme.
+    func handleAuthCallback(url: URL) async {
+        guard let client else { return }
+        do {
+            try await client.auth.session(from: url)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
     func signOut() async {
         guard let client else { return }
         isLoading = true
