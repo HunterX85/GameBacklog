@@ -87,7 +87,16 @@ final class AuthViewModel: ObservableObject {
             case .signIn:
                 try await client.auth.signIn(email: trimmedEmail, password: password)
             case .signUp:
-                let response = try await client.auth.signUp(email: trimmedEmail, password: password)
+                // Without this, the confirmation email links to Supabase's
+                // configured Site URL, which defaults to localhost — dead end
+                // on a phone. This custom scheme is handled by `onOpenURL` in
+                // GameBacklogApp and must also be added to the Supabase
+                // project's Authentication > URL Configuration > Redirect URLs.
+                let response = try await client.auth.signUp(
+                    email: trimmedEmail,
+                    password: password,
+                    redirectTo: URL(string: "gamebacklog://auth-confirm")
+                )
                 if response.session == nil {
                     infoMessage = String(localized: "settings.account.confirmEmail")
                 }

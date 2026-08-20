@@ -30,6 +30,11 @@ struct ProfileScreenView: View {
                         Label(String(localized: "profile.button.changePhoto"), systemImage: "photo")
                             .font(.subheadline.weight(.semibold))
                     }
+                    // Without an explicit style, Form/List extends this
+                    // control's tap target to the whole row — including the
+                    // photo above it — since it's the only interactive view
+                    // in the section. `.plain` limits it to the label itself.
+                    .buttonStyle(.plain)
                     .accessibilityIdentifier("changeProfilePhoto")
                 }
                 .frame(maxWidth: .infinity)
